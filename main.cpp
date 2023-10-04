@@ -1,21 +1,12 @@
 #include <iostream>
-#include "src/Position.h"
-#include <functional>
-
-bool assertThrows(const std::function<void()>& func){
-    try{
-        func();
-    }catch(std::invalid_argument& e){
-        return true;
-    }
-    return false;
-}
-
-void testPosition(){
-    assertThrows([]{Position p(9, 0);});
-}
+#include "Board.h"
 
 int main(){
-    testPosition();
-    return 0;
+    Board board(DEFAULT_CHESS_BOARD);
+    for (int i = 0; i<8; i++){
+        for (int j = 0; j<8; j++){
+            std::cout << board.isPositionOccupied(j, i) << " ";
+        }
+        std::cout << std::endl;
+    }
 }

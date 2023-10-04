@@ -6,18 +6,20 @@ typedef enum {
     BLACK, WHITE
 } Color;
 
+typedef enum {
+    PAWN, ROOK, KNIGHT, BISHOP, QUEEN, KING
+} PieceType;
+
 class Piece {
 private:
     Color color;
     unsigned int value;
 protected:
-    Piece(Color color, Position position, unsigned int value);
+    Piece(Color color, unsigned int value);
 public:
-    [[nodiscard]] Position getPosition() const;
-    void setPosition(Position newPosition);
-    virtual bool canMoveTo(Position position) = 0;
+    Color getColor() const;
+    virtual bool canMove(unsigned int fromX, unsigned int fromY, unsigned int toX, unsigned int toY) = 0;
     virtual ~Piece() = default;
 };
-
 
 #endif //CHESS_CPP_PIECE_H
