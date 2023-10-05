@@ -5,7 +5,7 @@
 #include "Board.h"
 
 Board::Board() {
-   pieces = std::map<Position, std::shared_ptr<Piece>>();
+   pieces = std::map<Position, std::unique_ptr<Piece>>();
 }
 
 Board::Board(BoardType type): Board() {
@@ -18,8 +18,12 @@ Board::Board(BoardType type): Board() {
     }
 }
 
-void Board::addPiece(Piece &piece, unsigned int x, unsigned int y) {
-    pieces.emplace(Position(x, y), std::shared_ptr<Piece>(&piece));
+void Board::addPiece(const std::unique_ptr<Piece>& piece, unsigned int x, unsigned int y) {
+    if (isPositionOccupied(x, y)) {
+        throw std::invalid_argument("Position is already occupied");
+    }
+    Position position = Position(x, y);
+    pieces.emplace(position, std::move(piece));
 }
 
 void Board::removePieceAt(unsigned int x, unsigned int y) {
@@ -27,8 +31,9 @@ void Board::removePieceAt(unsigned int x, unsigned int y) {
 }
 
 void Board::movePiece(unsigned int pieceX, unsigned int pieceY, unsigned int newX, unsigned int newY) {
-    Piece &movedPiece = getPieceAtPosition(pieceX, pieceY);
-    if (!movedPiece.canMove(pieceX, pieceY, newX, newY)) {
+    std::unique_ptr<Piece> movedPiece = std::move(pieces.at(Position(pieceX, pieceY)));
+
+    if (movedPiece->canMove(pieceX, pieceY, newX, newY)) {
         throw std::invalid_argument("Piece cannot be moved to this position");
     } else {
         removePieceAt(pieceX, pieceY);
@@ -40,24 +45,42 @@ bool Board::isPositionOccupied(unsigned int x, unsigned int y) {
     return pieces.find(Position(x, y)) != pieces.end();
 }
 
-Piece &Board::getPieceAtPosition(unsigned int x, unsigned int y) {
-    return *pieces[Position(x, y)];
-}
-
 void Board::populateDefaultChessBoard() {
     const unsigned int PAWN_ROW = 1, WHITE_PIECES_ROW = 0, BLACK_PIECES_ROW = 7, BLACK_PAWN_ROW = 6;
     std::vector<PieceType> defaultPiecesOrder = {ROOK, KNIGHT, BISHOP, QUEEN, KING, BISHOP, KNIGHT, ROOK};
-    for (int i = 0; i < 8; i++) {
-        pieces[Position(i, PAWN_ROW)] = PieceFactory::createPiece(PAWN, WHITE);
-        pieces[Position(i, BLACK_PAWN_ROW)] = PieceFactory::createPiece(PAWN, BLACK);
-    }
-    int i = 0;
-    for (PieceType type : defaultPiecesOrder) {
-        pieces[Position(i, WHITE_PIECES_ROW)] = PieceFactory::createPiece(type, WHITE);
-        pieces[Position(i++, BLACK_PIECES_ROW)] = PieceFactory::createPiece(type, BLACK);
+    auto iter = defaultPiecesOrder.begin();
+
+    for (int i = 0 ; i < Position::MAX_POSITION && iter != defaultPiecesOrder.end(); i++, iter++) {
+        addPiece(PieceFactory::createPiece(*iter, WHITE), i, WHITE_PIECES_ROW);
+        addPiece(PieceFactory::createPiece(*iter, BLACK), i, BLACK_PIECES_ROW);
+        addPiece(PieceFactory::createPiece(PAWN, WHITE), i, PAWN_ROW);
+        addPiece(PieceFactory::createPiece(PAWN, BLACK), i, BLACK_PAWN_ROW);
     }
 }
-/*
-bool Board::canMovePiece(unsigned int pieceX, unsigned int pieceY, unsigned int newX, unsigned int newY) {
-    return false;
-} */
+
+std::vector<std::unique_ptr<Piece>>
+Board::getPiecesInPath(PieceType type, unsigned int fromX, unsigned int fromY, unsigned int toX, unsigned int toY) {
+    std::vector<std::unique_ptr<Piece>> piecesInPath = std::vector<std::unique_ptr<Piece>>();
+    switch (type) {
+        case BISHOP:
+            piecesInPath.push_back(getPieceAtPosition(fromX, fromY));
+            break;
+        default:
+            for (unsigned int i = fromX, j = fromY; i < toX || j < toY;) {
+                piecesInPath.push_back(getPieceAtPosition(i, j));
+                if (i < toX)
+                    i++;
+                if (j < toY)
+                    j++;
+            }
+    }
+    return piecesInPath;
+}
+
+bool Board::canMoveOnBoard(unsigned int fromX, unsigned int fromY, unsigned int toX, unsigned int toY) {
+    
+}
+
+std::unique_ptr<Piece> &Board::getPieceAtPosition(unsigned int x, unsigned int y) {
+    return pieces.at(Position(x, y));
+}

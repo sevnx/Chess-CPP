@@ -6,8 +6,11 @@
 class Pawn : public Piece {
 private:
     enum {
-        PAWN_VALUE = 1
+        PAWN_VALUE = 1,
+        MOVE_DISTANCE = 1,
+        FIRST_MOVE_DISTANCE = 2
     };
+    bool firstMove;
 public:
     explicit Pawn(Color color);
     bool canMove(unsigned int fromX, unsigned int fromY, unsigned int toX, unsigned int toY) override;

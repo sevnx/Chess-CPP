@@ -13,7 +13,7 @@
 
 class PieceFactory {
 public:
-    static std::shared_ptr<Piece> createPiece(PieceType type, Color color);
+    static std::unique_ptr<Piece> createPiece(PieceType type, Color color);
 };
 
 

@@ -5,20 +5,19 @@
 
 #include "PieceFactory.hpp"
 
-std::shared_ptr<Piece> PieceFactory::createPiece(PieceType type, Color color) {
+std::unique_ptr<Piece> PieceFactory::createPiece(PieceType type, Color color) {
     switch (type) {
         case PAWN:
-            return std::make_shared<Pawn>(Pawn(color));
+            return std::make_unique<Pawn>(color);
         case ROOK:
-            return std::make_shared<Rook>(Rook(color));
+            return std::make_unique<Rook>(color);
         case KNIGHT:
-            return std::make_shared<Knight>(Knight(color));
+            return std::make_unique<Knight>(color);
         case BISHOP:
-            return std::make_shared<Bishop>(Bishop(color));
+            return std::make_unique<Bishop>(color);
         case QUEEN:
-            return std::make_shared<Queen>(Queen(color));
+            return std::make_unique<Queen>(color);
         case KING:
-            return std::make_shared<King>(King(color));
+            return std::make_unique<King>(color);
     }
-    return nullptr;
 }
