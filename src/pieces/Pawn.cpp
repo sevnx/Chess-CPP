@@ -4,6 +4,6 @@ Pawn::Pawn(Color color): Piece(color,PAWN_VALUE){
     firstMove = true;
 }
 
-bool Pawn::canMove(unsigned int fromX, unsigned int fromY, unsigned int toX, unsigned int toY) {
-    return false;
+bool Pawn::isMoveValid(int fromX, int fromY, int toX, int toY) {
+    return MoveValidator::isMoveValid(fromX, fromY, toX, toY, getColor(), PieceType::PAWN, firstMove);
 };

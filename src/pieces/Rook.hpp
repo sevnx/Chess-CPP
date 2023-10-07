@@ -1,7 +1,7 @@
 #ifndef CHESS_CPP_ROOK_HPP
 #define CHESS_CPP_ROOK_HPP
 
-#include "Piece.h"
+#include "../Piece.h"
 
 class Rook : public Piece {
 private:
@@ -10,7 +10,7 @@ private:
     };
 public:
     explicit Rook(Color color);
-    bool canMove(unsigned int fromX, unsigned int fromY, unsigned int toX, unsigned int toY) override;
+    bool isMoveValid(int fromX, int fromY, int toX, int toY) override;
     ~Rook() override = default;
 };
 

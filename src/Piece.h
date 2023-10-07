@@ -1,6 +1,8 @@
 #ifndef CHESS_CPP_PIECE_H
 #define CHESS_CPP_PIECE_H
+
 #include "Position.h"
+#include "MoveValidator.hpp"
 
 typedef enum {
     BLACK, WHITE
@@ -17,8 +19,8 @@ private:
 protected:
     Piece(Color color, unsigned int value);
 public:
-    Color getColor() const;
-    virtual bool canMove(unsigned int fromX, unsigned int fromY, unsigned int toX, unsigned int toY) = 0;
+    [[nodiscard]] Color getColor() const;
+    virtual bool isMoveValid(int fromX, int fromY, int toX, int toY) = 0;
     virtual ~Piece() = default;
 };
 

@@ -1,7 +1,7 @@
 #ifndef CHESS_CPP_PAWN_HPP
 #define CHESS_CPP_PAWN_HPP
 
-#include "Piece.h"
+#include "../Piece.h"
 
 class Pawn : public Piece {
 private:
@@ -13,7 +13,7 @@ private:
     bool firstMove;
 public:
     explicit Pawn(Color color);
-    bool canMove(unsigned int fromX, unsigned int fromY, unsigned int toX, unsigned int toY) override;
+    bool isMoveValid(int fromX, int fromY, int toX, int toY) override;
     ~Pawn() override = default;
 };
 

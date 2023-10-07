@@ -1,12 +1,8 @@
-//
-// Created by sev on 04/10/2023.
-//
-
 #include "Knight.hpp"
 
 
 Knight::Knight(Color color): Piece(color,KNIGHT_VALUE){}
 
-bool Knight::canMove(unsigned int fromX, unsigned int fromY, unsigned int toX, unsigned int toY) {
-    return false;
-};
+bool Knight::isMoveValid(int fromX, int fromY, int toX, int toY) {
+    return MoveValidator::isMoveValid(fromX, fromY, toX, toY, getColor(), PieceType::KNIGHT);
+}

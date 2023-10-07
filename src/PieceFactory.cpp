@@ -1,8 +1,3 @@
-//
-// Created by sev on 04/10/2023.
-//
-
-
 #include "PieceFactory.hpp"
 
 std::unique_ptr<Piece> PieceFactory::createPiece(PieceType type, Color color) {

@@ -1,7 +1,7 @@
 #ifndef CHESS_CPP_KING_HPP
 #define CHESS_CPP_KING_HPP
 
-#include "Piece.h"
+#include "../Piece.h"
 
 class King : public Piece {
 private:
@@ -10,7 +10,7 @@ private:
     };
 public:
     explicit King(Color color);
-    bool canMove(unsigned int fromX, unsigned int fromY, unsigned int toX, unsigned int toY) override;
+    bool isMoveValid(int fromX, int fromY, int toX, int toY) override;
     ~King() override = default;
 };
 

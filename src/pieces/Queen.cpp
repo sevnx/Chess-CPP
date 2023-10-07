@@ -1,11 +1,7 @@
-//
-// Created by sev on 04/10/2023.
-//
-
 #include "Queen.hpp"
 
 Queen::Queen(Color color): Piece(color,QUEEN_VALUE){}
 
-bool Queen::canMove(unsigned int fromX, unsigned int fromY, unsigned int toX, unsigned int toY) {
-    return false;
+bool Queen::isMoveValid(int fromX, int fromY, int toX, int toY) {
+    return MoveValidator::isMoveValid(fromX, fromY, toX, toY, getColor(), PieceType::QUEEN);
 };
