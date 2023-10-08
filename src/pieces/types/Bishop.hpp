@@ -3,7 +3,7 @@
 
 #include <array>
 #include "../Piece.h"
-#include <algorithm>
+#include "../../utility/MoveValidator.hpp"
 
 class Bishop : public Piece {
 private:
@@ -13,6 +13,7 @@ private:
 public:
     explicit Bishop(Color color);
     bool isMoveValid(int fromX, int fromY, int toX, int toY) override;
+    PieceType getType() override;
     ~Bishop() override = default;
 };
 

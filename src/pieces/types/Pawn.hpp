@@ -2,6 +2,7 @@
 #define CHESS_CPP_PAWN_HPP
 
 #include "../Piece.h"
+#include "../../utility/MoveValidator.hpp"
 
 class Pawn : public Piece {
 private:
@@ -14,6 +15,7 @@ private:
 public:
     explicit Pawn(Color color);
     bool isMoveValid(int fromX, int fromY, int toX, int toY) override;
+    PieceType getType() override;
     ~Pawn() override = default;
 };
 

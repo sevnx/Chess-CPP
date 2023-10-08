@@ -24,12 +24,15 @@ void Board::removePieceAt(unsigned int x, unsigned int y) {
     pieces.erase(Position(x, y));
 }
 
-void Board::movePiece(unsigned int pieceX, unsigned int pieceY, unsigned int newX, unsigned int newY) {
-    std::unique_ptr<Piece> movedPiece = getPieceAtPosition(pieceX, pieceY);
+std::unique_ptr<Piece> Board::getPieceAtPosition(unsigned int x, unsigned int y) {
+    return std::move(pieces[Position(x, y)]);
+}
 
-    if (movedPiece->isMoveValid(pieceX, pieceY, newX, newY)) {
+void Board::movePiece(unsigned int pieceX, unsigned int pieceY, unsigned int newX, unsigned int newY) {
+    if (pieces[Position(pieceX, pieceY)]->isMoveValid(pieceX, pieceY, newX, newY)) {
         throw std::invalid_argument("Piece cannot be moved to this position");
     } else {
+        std::unique_ptr<Piece> movedPiece = getPieceAtPosition(pieceX, pieceY);
         removePieceAt(pieceX, pieceY);
         addPiece(std::move(movedPiece), newX, newY);
     }
@@ -52,6 +55,3 @@ void Board::populateDefaultChessBoard() {
     }
 }
 
-std::unique_ptr<Piece> Board::getPieceAtPosition(unsigned int x, unsigned int y) {
-    return std::move(pieces[Position(x, y)]);
-}

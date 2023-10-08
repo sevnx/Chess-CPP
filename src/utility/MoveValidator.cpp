@@ -37,6 +37,7 @@ bool MoveValidator::isMoveForwardsOrSidewaysByOneCase() const {
         case Color::BLACK:
             return isMoveInOneByOneBox() && fromY - toY == maxDistance;
     }
+    return false;
 }
 
 bool MoveValidator::isMoveForwardsByAtMostTwoCases() const {
@@ -47,26 +48,28 @@ bool MoveValidator::isMoveForwardsByAtMostTwoCases() const {
         case Color::BLACK:
             return isMoveInOneByOneBox() && fromY - toY <= maxDistance;
     }
+    return false;
 }
 
 bool MoveValidator::isMoveValid(int fromX, int fromY, int toX, int toY, Color color, PieceType type, bool firstMove) {
     MoveValidator moveValidator(fromX, fromY, toX, toY, color);
-    bool isMoveNull = moveValidator.isMoveNull();
+    bool isMoveNotNull = !moveValidator.isMoveNull();
     bool isPositionValid = Position::isPositionValid(toX, toY);
     switch (type) {
         case PieceType::PAWN:
-            return isMoveNull && isPositionValid && moveValidator.isMoveValidForPawn(firstMove);
+            return isMoveNotNull && isPositionValid && moveValidator.isMoveValidForPawn(firstMove);
         case PieceType::ROOK:
-            return isMoveNull && isPositionValid && moveValidator.isMoveValidForRook();
+            return isMoveNotNull && isPositionValid && moveValidator.isMoveValidForRook();
         case PieceType::KNIGHT:
-            return isMoveNull && isPositionValid && moveValidator.isMoveValidForKnight();
+            return isMoveNotNull && isPositionValid && moveValidator.isMoveValidForKnight();
         case PieceType::BISHOP:
-            return isMoveNull && isPositionValid && moveValidator.isMoveValidForBishop();
+            return isMoveNotNull && isPositionValid && moveValidator.isMoveValidForBishop();
         case PieceType::QUEEN:
-            return isMoveNull && isPositionValid && moveValidator.isMoveValidForQueen();
+            return isMoveNotNull && isPositionValid && moveValidator.isMoveValidForQueen();
         case PieceType::KING:
-            return isMoveNull && isPositionValid && moveValidator.isMoveValidForKing();
+            return isMoveNotNull && isPositionValid && moveValidator.isMoveValidForKing();
     }
+    return false;
 }
 
 bool MoveValidator::isMoveValidForPawn(bool firstMove) {

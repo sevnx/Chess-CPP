@@ -15,4 +15,5 @@ std::unique_ptr<Piece> PieceFactory::createPiece(PieceType type, Color color) {
         case KING:
             return std::make_unique<King>(color);
     }
+    return nullptr;
 }

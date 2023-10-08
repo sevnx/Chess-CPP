@@ -1,8 +1,8 @@
 #ifndef CHESS_CPP_KNIGHT_HPP
 #define CHESS_CPP_KNIGHT_HPP
 
-#include <array>
 #include "../Piece.h"
+#include "../../utility/MoveValidator.hpp"
 
 class Knight : public Piece {
 private:
@@ -12,6 +12,7 @@ private:
 public:
     explicit Knight(Color color);
     bool isMoveValid(int fromX, int fromY, int toX, int toY) override;
+    PieceType getType() override;
     ~Knight() override = default;
 };
 

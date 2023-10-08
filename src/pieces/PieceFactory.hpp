@@ -4,12 +4,12 @@
 #include "Piece.h"
 #include <memory>
 
-#include "pieces/Pawn.hpp"
-#include "pieces/Rook.hpp"
-#include "pieces/Knight.hpp"
-#include "pieces/Bishop.hpp"
-#include "pieces/Queen.hpp"
-#include "pieces/King.hpp"
+#include "types/Pawn.hpp"
+#include "types/Rook.hpp"
+#include "types/Knight.hpp"
+#include "types/Bishop.hpp"
+#include "types/Queen.hpp"
+#include "types/King.hpp"
 
 class PieceFactory {
 public:

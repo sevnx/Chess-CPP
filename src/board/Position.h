@@ -1,9 +1,6 @@
-//
-// Created by SeV on 02.10.2023.
-//
-
 #ifndef CHESS_CPP_POSITION_H
 #define CHESS_CPP_POSITION_H
+
 #include <stdexcept>
 
 struct Position {

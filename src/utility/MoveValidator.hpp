@@ -1,9 +1,9 @@
 #ifndef CHESS_CPP_MOVEVALIDATOR_HPP
 #define CHESS_CPP_MOVEVALIDATOR_HPP
 
-#include "Position.h"
-#include "Piece.h"
-#include "Board.h"
+#include "../board/Position.h"
+#include "../pieces/Piece.h"
+#include "../board/Board.h"
 
 class MoveValidator {
 private:

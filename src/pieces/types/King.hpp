@@ -2,6 +2,7 @@
 #define CHESS_CPP_KING_HPP
 
 #include "../Piece.h"
+#include "../../utility/MoveValidator.hpp"
 
 class King : public Piece {
 private:
@@ -11,6 +12,7 @@ private:
 public:
     explicit King(Color color);
     bool isMoveValid(int fromX, int fromY, int toX, int toY) override;
+    PieceType getType() override;
     ~King() override = default;
 };
 

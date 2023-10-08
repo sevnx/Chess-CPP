@@ -4,8 +4,8 @@
 #include <vector>
 #include <map>
 #include <memory>
-#include "Piece.h"
-#include "PieceFactory.hpp"
+#include "../pieces/Piece.h"
+#include "../pieces/PieceFactory.hpp"
 #include "Position.h"
 
 typedef enum {
@@ -27,6 +27,5 @@ public:
     std::unique_ptr<Piece> getPieceAtPosition(unsigned int x, unsigned int y);
     ~Board() = default;
 };
-
 
 #endif //CHESS_CPP_BOARD_H
