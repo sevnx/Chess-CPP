@@ -3,25 +3,29 @@
 
 #include "../board/Position.h"
 
-typedef enum {
+enum class PieceColor {
     BLACK, WHITE
-} Color;
+};
 
-typedef enum {
+enum class PieceType {
     PAWN, ROOK, KNIGHT, BISHOP, QUEEN, KING
-} PieceType;
+};
 
 class Piece {
 private:
-    Color color;
+    PieceColor color;
+    PieceType type;
     unsigned int value;
+    unsigned int moveCount;
 protected:
-    Piece(Color color, unsigned int value);
+    Piece(PieceColor color, PieceType type, unsigned int value);
 public:
-    [[nodiscard]] Color getColor() const;
+    [[nodiscard]] PieceColor getColor() const;
+    [[nodiscard]] PieceType getType() const;
     [[nodiscard]] unsigned int getValue() const;
-    virtual bool isMoveValid(int fromX, int fromY, int toX, int toY) = 0;
-    virtual PieceType getType() = 0;
+    [[nodiscard]] unsigned int getMoveCount() const;
+    [[nodiscard]] bool isFirstMove() const;
+    void incrementMoveCount();
     virtual ~Piece() = default;
 };
 

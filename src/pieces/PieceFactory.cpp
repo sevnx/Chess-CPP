@@ -1,18 +1,18 @@
 #include "PieceFactory.hpp"
 
-std::unique_ptr<Piece> PieceFactory::createPiece(PieceType type, Color color) {
+std::unique_ptr<Piece> PieceFactory::createPiece(PieceType type, PieceColor color) {
     switch (type) {
-        case PAWN:
+        case PieceType::PAWN:
             return std::make_unique<Pawn>(color);
-        case ROOK:
+        case PieceType::ROOK:
             return std::make_unique<Rook>(color);
-        case KNIGHT:
+        case PieceType::KNIGHT:
             return std::make_unique<Knight>(color);
-        case BISHOP:
+        case PieceType::BISHOP:
             return std::make_unique<Bishop>(color);
-        case QUEEN:
+        case PieceType::QUEEN:
             return std::make_unique<Queen>(color);
-        case KING:
+        case PieceType::KING:
             return std::make_unique<King>(color);
     }
     return nullptr;

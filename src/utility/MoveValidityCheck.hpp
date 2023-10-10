@@ -1,15 +1,15 @@
-#ifndef CHESS_CPP_MOVEVALIDATOR_HPP
-#define CHESS_CPP_MOVEVALIDATOR_HPP
+#ifndef CHESS_CPP_MOVEVALIDITYCHECK_HPP
+#define CHESS_CPP_MOVEVALIDITYCHECK_HPP
 
 #include "../board/Position.h"
 #include "../pieces/Piece.h"
-#include "../board/Board.h"
 
-class MoveValidator {
+class MoveValidityCheck {
 private:
-    int fromX, fromY, toX, toY;
-    Color color;
-    MoveValidator(int fromX, int fromY, int toX, int toY, Color color);
+    Piece& pieceFrom;
+    Position from;
+    Position to;
+    MoveValidityCheck(Piece& piece, int fromX, int fromY, int toX, int toY);
     [[nodiscard]] bool isMoveNull() const;
     [[nodiscard]] bool isMoveInStraightLine() const;
     [[nodiscard]] bool isMoveInDiagonalLine() const;
@@ -23,9 +23,10 @@ private:
     bool isMoveValidForBishop();
     bool isMoveValidForQueen();
     bool isMoveValidForKing();
-    ~MoveValidator() = default;
+    bool isMoveValidForPiece();
+    ~MoveValidityCheck() = default;
 public:
-    static bool isMoveValid(int fromX, int fromY, int toX, int toY, Color color, PieceType type, bool firstMove = false);
+    static bool isMoveValid(Piece& piece, int fromX, int fromY, int toX, int toY);
 };
 
-#endif //CHESS_CPP_MOVEVALIDATOR_HPP
+#endif //CHESS_CPP_MOVEVALIDITYCHECK_HPP

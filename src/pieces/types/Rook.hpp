@@ -2,7 +2,6 @@
 #define CHESS_CPP_ROOK_HPP
 
 #include "../Piece.h"
-#include "../../utility/MoveValidator.hpp"
 
 class Rook : public Piece {
 private:
@@ -10,11 +9,8 @@ private:
         ROOK_VALUE = 5
     };
 public:
-    explicit Rook(Color color);
-    bool isMoveValid(int fromX, int fromY, int toX, int toY) override;
-    PieceType getType() override;
+    explicit Rook(PieceColor color);
     ~Rook() override = default;
 };
-
 
 #endif //CHESS_CPP_ROOK_HPP

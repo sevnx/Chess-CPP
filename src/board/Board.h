@@ -8,23 +8,24 @@
 #include "../pieces/PieceFactory.hpp"
 #include "Position.h"
 
-typedef enum {
+enum class BoardType {
     DEFAULT_CHESS_BOARD,
     EMPTY_BOARD
-} BoardType;
+};
 
 class Board {
 private:
     std::map<Position, std::unique_ptr<Piece>> pieces;
-    void populateDefaultChessBoard();
     Board();
+    void populateDefaultChessBoard();
+    std::unique_ptr<Piece> movePiecePointerAtPosition(int x, int y);
+    void movePiece(int pieceX, int pieceY, int newX, int newY);
+    void addPiece(std::unique_ptr<Piece> piece, int x, int y);
 public:
     explicit Board(BoardType type);
-    void addPiece(std::unique_ptr<Piece> piece, unsigned int x, unsigned int y);
-    void removePieceAt(unsigned int x, unsigned int y);
-    void movePiece(unsigned int pieceX, unsigned int pieceY, unsigned int newX, unsigned int newY);
-    bool isPositionOccupied(unsigned int x, unsigned int y);
-    std::unique_ptr<Piece> getPieceAtPosition(unsigned int x, unsigned int y);
+    void removePieceAt(int x, int y);
+    bool isPositionOccupied(int x, int y);
+    Piece& getPieceAt(int x, int y);
     ~Board() = default;
 };
 

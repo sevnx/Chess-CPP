@@ -1,0 +1,14 @@
+#ifndef CHESS_CPP_MOVES_HPP
+#define CHESS_CPP_MOVES_HPP
+
+enum class ExistingMoves {
+    DIAGONAL,
+    STRAIGHT,
+    L_SHAPED,
+    ONE_BY_ONE_BOX,
+    ONE_STEP_FORWARD,
+    ONE_OR_TWO_STEPS_FORWARD,
+    ONE_STEP_FORWARD_DIAGONALLY,
+};
+
+#endif //CHESS_CPP_MOVES_HPP

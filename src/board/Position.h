@@ -7,9 +7,9 @@ struct Position {
     enum {
         MAX_POSITION = 8
     };
-    unsigned int x;
-    unsigned int y;
-    Position(unsigned int x, unsigned int y);
+    int x;
+    int y;
+    Position(int x, int y);
     static bool isPositionValid(unsigned int x,unsigned int y);
     bool operator==(const Position &other) const;
     bool operator!=(const Position &other) const;
