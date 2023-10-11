@@ -1,7 +1,7 @@
 #ifndef CHESS_CPP_KNIGHT_HPP
 #define CHESS_CPP_KNIGHT_HPP
 
-#include "../Piece.h"
+#include "../Piece.hpp"
 
 class Knight : public Piece {
 private:
@@ -10,6 +10,7 @@ private:
     };
 public:
     explicit Knight(PieceColor color);
+
     ~Knight() override = default;
 };
 

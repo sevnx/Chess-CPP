@@ -1,5 +1,5 @@
 #include <iostream>
-#include "src/board/Board.h"
+#include "src/board/Board.hpp"
 
 int main(){
     Board board(BoardType::DEFAULT_CHESS_BOARD);

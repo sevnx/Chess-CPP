@@ -1,5 +1,5 @@
-#ifndef CHESS_CPP_MOVES_HPP
-#define CHESS_CPP_MOVES_HPP
+#ifndef CHESS_CPP_MOVETYPES_HPP
+#define CHESS_CPP_MOVETYPES_HPP
 
 enum class ExistingMoves {
     DIAGONAL,
@@ -11,4 +11,4 @@ enum class ExistingMoves {
     ONE_STEP_FORWARD_DIAGONALLY,
 };
 
-#endif //CHESS_CPP_MOVES_HPP
+#endif //CHESS_CPP_MOVETYPES_HPP

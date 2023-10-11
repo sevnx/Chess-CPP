@@ -1,7 +1,7 @@
 #ifndef CHESS_CPP_PIECEFACTORY_HPP
 #define CHESS_CPP_PIECEFACTORY_HPP
 
-#include "Piece.h"
+#include "Piece.hpp"
 #include <memory>
 
 #include "types/Pawn.hpp"

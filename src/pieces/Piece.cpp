@@ -1,7 +1,7 @@
-#include "Piece.h"
+#include "Piece.hpp"
 
 Piece::Piece(PieceColor color, PieceType type, unsigned int value) :
-color(color), type(type), value(value), moveCount(0) {}
+        color(color), type(type), value(value), moveCount(0) {}
 
 PieceColor Piece::getColor() const {
     return color;

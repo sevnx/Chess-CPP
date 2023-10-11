@@ -1,7 +1,7 @@
 #ifndef CHESS_CPP_QUEEN_HPP
 #define CHESS_CPP_QUEEN_HPP
 
-#include "../Piece.h"
+#include "../Piece.hpp"
 
 class Queen : public Piece {
 private:
@@ -10,6 +10,7 @@ private:
     };
 public:
     explicit Queen(PieceColor color);
+
     ~Queen() override = default;
 };
 

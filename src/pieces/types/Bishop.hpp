@@ -1,7 +1,7 @@
 #ifndef CHESS_CPP_BISHOP_HPP
 #define CHESS_CPP_BISHOP_HPP
 
-#include "../Piece.h"
+#include "../Piece.hpp"
 
 class Bishop : public Piece {
 private:
@@ -10,6 +10,7 @@ private:
     };
 public:
     explicit Bishop(PieceColor color);
+
     ~Bishop() override = default;
 };
 

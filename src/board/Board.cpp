@@ -1,10 +1,10 @@
-#include "Board.h"
+#include "Board.hpp"
 
 Board::Board() {
-   std::map<Position, std::unique_ptr<Piece>>();
+    std::map<Position, std::unique_ptr<Piece>>();
 }
 
-Board::Board(BoardType type): Board() {
+Board::Board(BoardType type) : Board() {
     switch (type) {
         case BoardType::DEFAULT_CHESS_BOARD:
             populateDefaultChessBoard();
@@ -54,7 +54,7 @@ void Board::populateDefaultChessBoard() {
                                                  PieceType::ROOK};
     auto iter = defaultPiecesOrder.begin();
 
-    for (int i = 0 ; i < Position::MAX_POSITION && iter != defaultPiecesOrder.end(); i++, iter++) {
+    for (int i = 0; i < Position::MAX_POSITION && iter != defaultPiecesOrder.end(); i++, iter++) {
         addPiece(PieceFactory::createPiece(*iter, PieceColor::WHITE), i, WHITE_PIECES_ROW);
         addPiece(PieceFactory::createPiece(*iter, PieceColor::BLACK), i, BLACK_PIECES_ROW);
         addPiece(PieceFactory::createPiece(PieceType::PAWN, PieceColor::WHITE), i, PAWN_ROW);

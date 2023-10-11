@@ -1,7 +1,7 @@
 #ifndef CHESS_CPP_KING_HPP
 #define CHESS_CPP_KING_HPP
 
-#include "../Piece.h"
+#include "../Piece.hpp"
 
 class King : public Piece {
 private:
@@ -10,6 +10,7 @@ private:
     };
 public:
     explicit King(PieceColor color);
+
     ~King() override = default;
 };
 

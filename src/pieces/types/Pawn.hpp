@@ -1,7 +1,7 @@
 #ifndef CHESS_CPP_PAWN_HPP
 #define CHESS_CPP_PAWN_HPP
 
-#include "../Piece.h"
+#include "../Piece.hpp"
 
 class Pawn : public Piece {
 private:
@@ -10,6 +10,7 @@ private:
     };
 public:
     explicit Pawn(PieceColor color);
+
     ~Pawn() override = default;
 };
 

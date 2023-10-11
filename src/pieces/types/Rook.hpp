@@ -1,7 +1,7 @@
 #ifndef CHESS_CPP_ROOK_HPP
 #define CHESS_CPP_ROOK_HPP
 
-#include "../Piece.h"
+#include "../Piece.hpp"
 
 class Rook : public Piece {
 private:
@@ -10,6 +10,7 @@ private:
     };
 public:
     explicit Rook(PieceColor color);
+
     ~Rook() override = default;
 };
 
