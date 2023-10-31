@@ -32,6 +32,7 @@ add_executable(Chess_CPP
         src/pieces/types/Pawn.cpp
         src/pieces/types/Queen.cpp
         src/pieces/types/Rook.cpp
+        src/pieces/Piece.cpp
         src/pieces/PieceFactory.cpp
         src/board/Board.cpp
         src/board/Position.cpp

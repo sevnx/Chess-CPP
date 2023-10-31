@@ -10,10 +10,8 @@ bool PositionAttackChecker::isPositionAttacked(int x, int y) {
         for (int j = 0; j < Position::MAX_POSITION; j++) {
             if (board.getPieceAt(i, j).getColor() == ourColor)
                 continue;
-            if (MoveChecker::canMove(board, i, j, x, y)) {
-                positionAttacked[Position(x, y)] = true;
-                return true;
-            }
+            // Check if piece can move while not leaving king in check
+
         }
     }
     positionAttacked[Position(x, y)] = false;

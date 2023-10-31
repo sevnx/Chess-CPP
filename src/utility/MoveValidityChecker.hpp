@@ -1,14 +1,14 @@
 #ifndef CHESS_CPP_MOVEVALIDITYCHECKER_HPP
 #define CHESS_CPP_MOVEVALIDITYCHECKER_HPP
 
-#include "../board/Position.hpp"
-#include "../pieces/Piece.hpp"
+#include "../board/Board.hpp"
 
 class MoveValidityChecker {
 private:
     Piece &pieceFrom;
     Position from;
     Position to;
+
 
     MoveValidityChecker(Piece &piece, int fromX, int fromY, int toX, int toY);
 

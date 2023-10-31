@@ -4,7 +4,7 @@
 #include <vector>
 #include <map>
 #include <memory>
-#include "../pieces/Piece.hpp"
+
 #include "../pieces/PieceFactory.hpp"
 #include "Position.hpp"
 

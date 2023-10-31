@@ -1,8 +1,6 @@
 #ifndef CHESS_CPP_PIECE_H
 #define CHESS_CPP_PIECE_H
 
-#include "../board/Position.hpp"
-
 enum class PieceColor {
     BLACK, WHITE
 };

@@ -8,7 +8,7 @@ bool MoveLegalityChecker::isMoveLegal(Board &board, int fromX, int fromY, int to
 MoveLegalityChecker::MoveLegalityChecker(Board &board, int fromX, int fromY, int toX, int toY) :
         board(board), from(fromX, fromY), to(toX, toY),
         pieceFrom(board.getPieceAt(from.x, from.y)), pieceTo(board.getPieceAt(to.x, to.y)),
-        boardPositionGetter(board), positionAttackChecker(board, pieceFrom.getColor()) {}
+        boardPositionGetter(board) {}
 
 bool MoveLegalityChecker::isMoveLegal() {
     if (isMoveLegalForEnPassant() || isMoveLegalForCastling())
@@ -72,9 +72,8 @@ bool MoveLegalityChecker::isMoveLegalForKing() {
 }
 
 bool MoveLegalityChecker::isMoveLegalForAnyPiece() {
-    return (pieceFrom.getColor() != pieceTo.getColor()) &&
-           positionAttackChecker.isPositionAttacked(
-                   boardPositionGetter.getFirstPiecePosition(pieceFrom.getColor(), PieceType::KING));
+    return (pieceFrom.getColor() != pieceTo.getColor());
+    // positionAttackChecker.isPositionAttacked(.getFirstPiecePosition(pieceFrom.getColor(), PieceType::KING));
 }
 
 bool MoveLegalityChecker::isMoveLegalForCastling() {

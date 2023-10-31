@@ -13,7 +13,6 @@ private:
     Piece &pieceFrom;
     Piece &pieceTo;
     BoardPositionGetter boardPositionGetter;
-    PositionAttackChecker positionAttackChecker;
 
     MoveLegalityChecker(Board &board, int fromX, int fromY, int toX, int toY);
 
