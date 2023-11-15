@@ -16,5 +16,4 @@ public:
     static std::unique_ptr<Piece> createPiece(PieceType type, PieceColor color);
 };
 
-
 #endif //CHESS_CPP_PIECEFACTORY_HPP

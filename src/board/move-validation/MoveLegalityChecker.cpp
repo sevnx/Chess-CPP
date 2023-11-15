@@ -1,26 +1,27 @@
 #include "MoveLegalityChecker.hpp"
 
-bool MoveLegalityChecker::isMoveLegal(Board &board, int fromX, int fromY, int toX, int toY) {
+bool MoveLegalityChecker::isMoveLegal(ChessBoard &board, int fromX, int fromY, int toX, int toY) {
     MoveLegalityChecker check(board, fromX, fromY, toX, toY);
     return check.isMoveLegal();
 }
 
-MoveLegalityChecker::MoveLegalityChecker(Board &board, int fromX, int fromY, int toX, int toY) :
+MoveLegalityChecker::MoveLegalityChecker(ChessBoard &board, int fromX, int fromY, int toX, int toY) :
         board(board), from(fromX, fromY), to(toX, toY),
-        pieceFrom(board.getPieceAt(from.x, from.y)), pieceTo(board.getPieceAt(to.x, to.y)),
-        boardPositionGetter(board) {}
+        pieceFrom(board.getPieceAt({from.x, from.y})), pieceTo(board.getPieceAt({to.x, to.y})),
+        boardPositionGetter(board){}
 
 bool MoveLegalityChecker::isMoveLegal() {
     if (isMoveLegalForEnPassant() || isMoveLegalForCastling())
         return true;
-    if (isMoveLegalForAnyPiece())
+    if (!isMoveLegalForAnyPiece())
         return false;
     switch (pieceFrom.getType()) {
         case PieceType::PAWN:
             return isMoveLegalForPawn();
         case PieceType::KNIGHT:
             return isMoveLegalForKnight();
-        case PieceType::BISHOP:
+        case PieceType::BISHOP_WHITE:
+        case PieceType::BISHOP_BLACK:
             return isMoveLegalForBishop();
         case PieceType::ROOK:
             return isMoveLegalForRook();
@@ -28,6 +29,8 @@ bool MoveLegalityChecker::isMoveLegal() {
             return isMoveLegalForQueen();
         case PieceType::KING:
             return isMoveLegalForKing();
+        case PieceType::NONE:
+            break;
     }
     return false;
 }
@@ -41,11 +44,11 @@ bool MoveLegalityChecker::isMoveLegalForPawn() {
         return false;
     if (distanceX == 0 && distanceY == MAX_PAWN_MOVE_Y) {
         return pieceFrom.getMoveCount() == 0
-               && !board.isPositionOccupied(to.x, to.y)
+               && !board.isPositionOccupied({to.x, to.y})
                && !areTherePiecesBetween(ExistingMoves::STRAIGHT);
     }
     if (distanceX == 1 && distanceY == 1) {
-        return board.isPositionOccupied(to.x, to.y)
+        return board.isPositionOccupied({to.x, to.y})
                && pieceFrom.getColor() != pieceTo.getColor();
     }
     return false;
@@ -81,14 +84,22 @@ bool MoveLegalityChecker::isMoveLegalForCastling() {
     PieceType pieceToType = pieceTo.getType();
     if (pieceFromType < pieceToType)
         std::swap(pieceFromType, pieceToType);
+    if (pieceFromType != PieceType::KING || pieceToType != PieceType::ROOK)
+        return false;
+    if (pieceFrom.getMoveCount() != 0 || pieceTo.getMoveCount() != 0)
+        return false;
+    if (areTherePiecesBetween(ExistingMoves::STRAIGHT))
+        return false;
+    if (positionAttackChecker.arePositionsAttacked(BoardPositionGetter::getPositionsInBetween(ExistingMoves::STRAIGHT, {from, to})))
+        return false;
     return true;
 }
 
 bool MoveLegalityChecker::isMoveLegalForEnPassant() {
-    Piece &pieceTakenByEnPassant = board.getPieceAt(to.x, from.y);
+    Piece &pieceTakenByEnPassant = board.getPieceAt({to.x, from.y});
     return pieceFrom.getType() == PieceType::PAWN
-           && !board.isPositionOccupied(to.x, to.y)
-           && board.isPositionOccupied(to.x, from.y)
+           && !board.isPositionOccupied({to.x, to.y})
+           && board.isPositionOccupied({to.x, from.y})
            && pieceTakenByEnPassant.getType() == PieceType::PAWN
            && pieceTakenByEnPassant.getColor() != pieceFrom.getColor()
            && pieceTakenByEnPassant.getMoveCount() == 1;
@@ -109,7 +120,7 @@ bool MoveLegalityChecker::areTherePiecesBetween(ExistingMoves moveType) {
 bool MoveLegalityChecker::areTherePiecesBetweenDiagonally() {
     int x = from.x, y = from.y;
     while (x != to.x && y != to.y) {
-        if (board.isPositionOccupied(x, y))
+        if (board.isPositionOccupied({x, y}))
             return true;
         if (x < to.x)
             x++, y++;
@@ -122,7 +133,7 @@ bool MoveLegalityChecker::areTherePiecesBetweenDiagonally() {
 bool MoveLegalityChecker::areTherePiecesBetweenInStraightLine() {
     int x = from.x, y = from.y;
     while (x != to.x && y != to.y) {
-        if (board.isPositionOccupied(x, y))
+        if (board.isPositionOccupied({x, y}))
             return true;
         if (x < to.x)
             x++;

@@ -3,13 +3,16 @@
 
 #include "../Piece.hpp"
 
+typedef PieceColor BishopColor;
+
 class Bishop : public Piece {
 private:
     enum {
         BISHOP_VALUE = 3
     };
+    BishopColor bishopColor;
 public:
-    explicit Bishop(PieceColor color);
+    explicit Bishop(PieceColor color, BishopColor bishopColor);
 
     ~Bishop() override = default;
 };

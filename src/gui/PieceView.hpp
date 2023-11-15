@@ -1,0 +1,9 @@
+#ifndef CHESS_CPP_PIECEVIEW_HPP
+#define CHESS_CPP_PIECEVIEW_HPP
+
+class PieceView {
+
+};
+
+
+#endif //CHESS_CPP_PIECEVIEW_HPP

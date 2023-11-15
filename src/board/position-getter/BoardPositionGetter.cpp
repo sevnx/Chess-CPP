@@ -1,30 +1,32 @@
 #include "BoardPositionGetter.hpp"
 
-BoardPositionGetter::BoardPositionGetter(Board &board) : board(board) {}
+BoardPositionGetter::BoardPositionGetter(ChessBoard &board) : board(board) {}
 
-Position BoardPositionGetter::getFirstPiecePosition(PieceColor color, PieceType type) {
+Position BoardPositionGetter::getFirstPiecePosition(const PieceColor color, const PieceType type) const {
     for (int i = 0; i < Position::MAX_POSITION; i++)
-        for (int j = 0; j < Position::MAX_POSITION; j++)
-            if (board.getPieceAt(i, j).getType() == type && board.getPieceAt(i, j).getColor() == color)
+        for (int j = 0; j < Position::MAX_POSITION; j++) {
+            if (auto& piece = board.getPieceAt({i, j}); piece.getType() == type && piece.getColor() == color)
                 return {i, j};
+        }
     return {-1, -1};
 }
 
-std::vector<Position> BoardPositionGetter::getPiecesPositions(PieceColor color) {
+std::vector<Position> BoardPositionGetter::getPiecesPositions(const PieceColor color) const {
     std::vector<Position> positions;
     for (int i = 0; i < Position::MAX_POSITION; i++)
         for (int j = 0; j < Position::MAX_POSITION; j++)
-            if (board.getPieceAt(i, j).getColor() == color)
+            if (board.getPieceAt({i, j}).getColor() == color)
                 positions.emplace_back(i, j);
     return positions;
 }
 
-std::vector<Position> BoardPositionGetter::getPiecesPositions(PieceColor color, PieceType type) {
+std::vector<Position> BoardPositionGetter::getPiecesPositions(const PieceColor color, const PieceType type) const {
     std::vector<Position> positions;
     for (int i = 0; i < Position::MAX_POSITION; i++)
-        for (int j = 0; j < Position::MAX_POSITION; j++)
-            if (board.getPieceAt(i, j).getType() == type && board.getPieceAt(i, j).getColor() == color)
+        for (int j = 0; j < Position::MAX_POSITION; j++) {
+            if (auto& piece = board.getPieceAt({i, j}); piece.getType() == type && piece.getColor() == color)
                 positions.emplace_back(i, j);
+        }
     return positions;
 }
 
@@ -57,7 +59,7 @@ void BoardPositionGetter::populatePositionsInBetweenInStraightLine(std::vector<P
 }
 
 std::vector<Position>
-BoardPositionGetter::getPositionsInBetween(ExistingMoves moveType, std::pair<Position, Position> fromTo) {
+BoardPositionGetter::getPositionsInBetween(const ExistingMoves moveType, const std::pair<Position, Position>&fromTo) {
     std::vector<Position> positions;
     switch (moveType) {
         case ExistingMoves::STRAIGHT:
@@ -71,5 +73,3 @@ BoardPositionGetter::getPositionsInBetween(ExistingMoves moveType, std::pair<Pos
     }
     return positions;
 }
-
-

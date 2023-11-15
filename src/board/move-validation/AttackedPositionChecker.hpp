@@ -1,7 +1,8 @@
 #ifndef CHESS_CPP_POSITIONATTACKCHECKER_HPP
 #define CHESS_CPP_POSITIONATTACKCHECKER_HPP
 
-#include "../utility/MoveChecker.hpp"
+#include "board/move-checking/MoveChecker.hpp"
+#include <algorithm>
 
 class PositionAttackChecker {
 private:

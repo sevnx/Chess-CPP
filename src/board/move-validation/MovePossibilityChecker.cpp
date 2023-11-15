@@ -1,6 +1,10 @@
-#include "MoveValidityChecker.hpp"
+#include "MovePossibilityChecker.hpp"
 
-MoveValidityChecker::MoveValidityChecker(Piece &piece, int fromX, int fromY, int toX, int toY) :
+
+
+// MoveValidityChecker
+
+MoveValidityChecker::MoveValidityChecker(Piece &piece, const int fromX, const int fromY, const int toX, const int toY) :
         pieceFrom(piece), from(fromX, fromY), to(toX, toY) {}
 
 bool MoveValidityChecker::isMoveNull() const {
@@ -16,21 +20,21 @@ bool MoveValidityChecker::isMoveInDiagonalLine() const {
 }
 
 bool MoveValidityChecker::isMoveInForLShape() const {
-    std::pair<int, int> move = std::make_pair(abs(from.x - to.x), abs(from.y - to.y));
-    const unsigned int firstDirectionDistance = 2;
-    const unsigned int secondDirectionDistance = 1;
+    const auto [fst, snd] = std::make_pair(abs(from.x - to.x), abs(from.y - to.y));
+    constexpr unsigned int firstDirectionDistance = 2;
+    constexpr unsigned int secondDirectionDistance = 1;
 
-    return (move.first == firstDirectionDistance && move.second == secondDirectionDistance) ||
-           (move.first == secondDirectionDistance && move.second == firstDirectionDistance);
+    return (fst == firstDirectionDistance && snd == secondDirectionDistance) ||
+           (fst == secondDirectionDistance && snd == firstDirectionDistance);
 }
 
 bool MoveValidityChecker::isMoveInOneByOneBox() const {
-    const unsigned int maxDistance = 1;
+    constexpr unsigned int maxDistance = 1;
     return std::abs(from.x - to.x) <= maxDistance && std::abs(from.y - to.y) <= maxDistance;
 }
 
 bool MoveValidityChecker::isMoveForwardsOrSidewaysByOneCase() const {
-    const unsigned int maxDistance = 1;
+    constexpr unsigned int maxDistance = 1;
     switch (pieceFrom.getColor()) {
         case PieceColor::WHITE:
             return isMoveInOneByOneBox() && to.y - from.y == maxDistance;
@@ -41,7 +45,7 @@ bool MoveValidityChecker::isMoveForwardsOrSidewaysByOneCase() const {
 }
 
 bool MoveValidityChecker::isMoveForwardsByAtMostTwoCases() const {
-    const unsigned int maxDistance = 2;
+    constexpr unsigned int maxDistance = 2;
     switch (pieceFrom.getColor()) {
         case PieceColor::WHITE:
             return isMoveInOneByOneBox() && to.y - from.y <= maxDistance;
@@ -51,7 +55,7 @@ bool MoveValidityChecker::isMoveForwardsByAtMostTwoCases() const {
     return false;
 }
 
-bool MoveValidityChecker::isMoveValidForPiece() {
+bool MoveValidityChecker::isMoveValidForPiece() const {
     switch (pieceFrom.getType()) {
         case PieceType::PAWN:
             return isMoveValidForPawn();
@@ -59,47 +63,49 @@ bool MoveValidityChecker::isMoveValidForPiece() {
             return isMoveValidForRook();
         case PieceType::KNIGHT:
             return isMoveValidForKnight();
-        case PieceType::BISHOP:
+        case PieceType::BISHOP_BLACK:
+        case PieceType::BISHOP_WHITE:
             return isMoveValidForBishop();
         case PieceType::QUEEN:
             return isMoveValidForQueen();
         case PieceType::KING:
             return isMoveValidForKing();
+        case PieceType::NONE:
+            break;
     }
     return false;
 }
 
 
-bool MoveValidityChecker::isMoveValidForPawn() {
+bool MoveValidityChecker::isMoveValidForPawn() const {
     if (pieceFrom.isFirstMove())
         return isMoveForwardsByAtMostTwoCases() || isMoveForwardsOrSidewaysByOneCase();
-    else
-        return isMoveForwardsOrSidewaysByOneCase();
+    return isMoveForwardsOrSidewaysByOneCase();
 }
 
-bool MoveValidityChecker::isMoveValidForRook() {
+bool MoveValidityChecker::isMoveValidForRook() const {
     return isMoveInStraightLine();
 }
 
-bool MoveValidityChecker::isMoveValidForKnight() {
+bool MoveValidityChecker::isMoveValidForKnight() const {
     return isMoveInForLShape();
 }
 
-bool MoveValidityChecker::isMoveValidForBishop() {
+bool MoveValidityChecker::isMoveValidForBishop() const {
     return isMoveInDiagonalLine();
 }
 
-bool MoveValidityChecker::isMoveValidForQueen() {
+bool MoveValidityChecker::isMoveValidForQueen() const {
     return isMoveInStraightLine() || isMoveInDiagonalLine();
 }
 
-bool MoveValidityChecker::isMoveValidForKing() {
+bool MoveValidityChecker::isMoveValidForKing() const {
     return isMoveInOneByOneBox();
 }
 
-bool MoveValidityChecker::isMoveValid(Piece &piece, int fromX, int fromY, int toX, int toY) {
-    MoveValidityChecker moveValidator(piece, fromX, fromY, toX, toY);
-    bool isMoveNotNull = !moveValidator.isMoveNull();
-    bool isPositionValid = Position::isPositionValid(toX, toY);
+bool MoveValidityChecker::isMoveValid(Piece &piece, const int fromX, const int fromY, const int toX, const int toY) {
+    const MoveValidityChecker moveValidator(piece, fromX, fromY, toX, toY);
+    const bool isMoveNotNull = !moveValidator.isMoveNull();
+    const bool isPositionValid = Position::isPositionValid(toX, toY);
     return isMoveNotNull && isPositionValid && moveValidator.isMoveValidForPiece();
 }

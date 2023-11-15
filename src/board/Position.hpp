@@ -5,7 +5,8 @@
 
 struct Position {
     enum {
-        MAX_POSITION = 8
+        MAX_POSITION = 8,
+        UNDEFINED_POSITION = -1
     };
     int x;
     int y;
@@ -19,6 +20,8 @@ struct Position {
     bool operator!=(const Position &other) const;
 
     bool operator<(const Position &other) const;
+
+    bool operator>(const Position &other) const;
 
     ~Position() = default;
 };

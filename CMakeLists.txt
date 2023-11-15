@@ -18,14 +18,8 @@ add_executable(Chess_CPP
         src/pieces/types/Rook.hpp
         src/pieces/Piece.hpp
         src/pieces/PieceFactory.hpp
-        src/board/Board.hpp
+        src/board/ChessBoard.hpp
         src/board/Position.hpp
-        src/utility/MoveChecker.hpp
-        src/utility/MoveTypes.hpp
-        src/utility/MoveValidityChecker.hpp
-        src/utility/MoveLegalityChecker.hpp
-        src/utility/PositionAttackChecker.hpp
-        src/utility/BoardPositionGetter.hpp
         src/pieces/types/Bishop.cpp
         src/pieces/types/King.cpp
         src/pieces/types/Knight.cpp
@@ -34,14 +28,24 @@ add_executable(Chess_CPP
         src/pieces/types/Rook.cpp
         src/pieces/Piece.cpp
         src/pieces/PieceFactory.cpp
-        src/board/Board.cpp
+        src/board/ChessBoard.cpp
         src/board/Position.cpp
-        src/utility/MoveChecker.cpp
-        src/utility/MoveValidityChecker.cpp
-        src/utility/MoveLegalityChecker.cpp
-        src/utility/PositionAttackChecker.cpp
-        src/utility/BoardPositionGetter.cpp
         main.cpp
+        src/game/GamePlay.cpp
+        src/game/GamePlay.hpp
+        src/gui/PieceView.cpp
+        src/gui/PieceView.hpp
+        src/gui/ChessBoardView.cpp
+        src/gui/ChessBoardView.hpp
+        src/board/move-validation/MoveValidator.cpp
+        src/board/move-validation/MoveValidator.hpp
+        src/board/move-validation/MoveTypes.hpp
+        src/board/move-validation/AttackedPositionChecker.hpp
+        src/board/move-validation/AttackedPositionChecker.cpp
+        src/board/move-validation/MoveLegalityChecker.cpp
+        src/board/move-validation/MoveLegalityChecker.hpp
+        src/board/position-getter/BoardPositionGetter.hpp
+        src/board/position-getter/BoardPositionGetter.cpp
+        src/board/move-validation/MovePossibilityChecker.cpp
+        src/board/move-validation/MovePossibilityChecker.hpp
 )
-
-        

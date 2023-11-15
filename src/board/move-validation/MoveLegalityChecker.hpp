@@ -1,20 +1,19 @@
 #ifndef CHESS_CPP_MOVELEGALITYCHECKER_HPP
 #define CHESS_CPP_MOVELEGALITYCHECKER_HPP
 
-#include "./MoveTypes.hpp"
-#include "./BoardPositionGetter.hpp"
-#include "./PositionAttackChecker.hpp"
+#include "MoveTypes.hpp"
+#include "board/ChessBoard.hpp"
+#include "position-getter/BoardPositionGetter.hpp"
 
 class MoveLegalityChecker {
-private:
-    Board &board;
+    ChessBoard &board;
     Position from;
     Position to;
     Piece &pieceFrom;
     Piece &pieceTo;
     BoardPositionGetter boardPositionGetter;
 
-    MoveLegalityChecker(Board &board, int fromX, int fromY, int toX, int toY);
+    MoveLegalityChecker(ChessBoard &board, int fromX, int fromY, int toX, int toY);
 
     bool isMoveLegal();
 
@@ -45,7 +44,7 @@ private:
     bool areTherePiecesBetweenInStraightLine();
 
 public:
-    static bool isMoveLegal(Board &board, int fromX, int fromY, int toX, int toY);
+    static bool isMoveLegal(ChessBoard &board, int fromX, int fromY, int toX, int toY);
 };
 
 

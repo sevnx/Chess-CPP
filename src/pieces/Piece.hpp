@@ -6,7 +6,7 @@ enum class PieceColor {
 };
 
 enum class PieceType {
-    PAWN, ROOK, KNIGHT, BISHOP, QUEEN, KING, NONE
+    PAWN, ROOK, KNIGHT, BISHOP_BLACK, BISHOP_WHITE, QUEEN, KING, NONE
 };
 
 class Piece {
@@ -30,6 +30,8 @@ public:
     [[nodiscard]] bool isFirstMove() const;
 
     void incrementMoveCount();
+
+    virtual bool operator==(const Piece &other) const;
 
     virtual ~Piece() = default;
 };

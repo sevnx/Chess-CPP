@@ -8,8 +8,10 @@ std::unique_ptr<Piece> PieceFactory::createPiece(PieceType type, PieceColor colo
             return std::make_unique<Rook>(color);
         case PieceType::KNIGHT:
             return std::make_unique<Knight>(color);
-        case PieceType::BISHOP:
-            return std::make_unique<Bishop>(color);
+        case PieceType::BISHOP_BLACK:
+            return std::make_unique<Bishop>(color, BishopColor::BLACK);
+        case PieceType::BISHOP_WHITE:
+            return std::make_unique<Bishop>(color, BishopColor::WHITE);
         case PieceType::QUEEN:
             return std::make_unique<Queen>(color);
         case PieceType::KING:

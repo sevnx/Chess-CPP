@@ -26,3 +26,7 @@ bool Piece::isFirstMove() const {
 PieceType Piece::getType() const {
     return type;
 }
+
+bool Piece::operator==(const Piece &other) const {
+    return type == other.type;
+}
