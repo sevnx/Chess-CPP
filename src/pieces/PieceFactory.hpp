@@ -3,6 +3,7 @@
 
 #include "Piece.hpp"
 #include <memory>
+#include <stdexcept>
 
 #include "types/Pawn.hpp"
 #include "types/Rook.hpp"

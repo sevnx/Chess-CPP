@@ -1,6 +1,6 @@
 #include "PieceFactory.hpp"
 
-std::unique_ptr<Piece> PieceFactory::createPiece(PieceType type, PieceColor color) {
+std::unique_ptr<Piece> PieceFactory::createPiece(const PieceType type, const PieceColor color) {
     switch (type) {
         case PieceType::PAWN:
             return std::make_unique<Pawn>(color);
@@ -16,6 +16,8 @@ std::unique_ptr<Piece> PieceFactory::createPiece(PieceType type, PieceColor colo
             return std::make_unique<Queen>(color);
         case PieceType::KING:
             return std::make_unique<King>(color);
+        default:
+            break;
     }
-    return nullptr;
+    throw std::invalid_argument("Invalid piece type");
 }

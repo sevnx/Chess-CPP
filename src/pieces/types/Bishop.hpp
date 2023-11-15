@@ -5,8 +5,7 @@
 
 typedef PieceColor BishopColor;
 
-class Bishop : public Piece {
-private:
+class Bishop final : public Piece {
     enum {
         BISHOP_VALUE = 3
     };

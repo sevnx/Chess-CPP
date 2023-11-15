@@ -18,8 +18,8 @@ bool Position::operator<(const Position &other) const {
     return this->x < other.x || (this->x == other.x && this->y < other.y);
 }
 
-bool Position::isPositionValid(unsigned int x, unsigned int y) {
-    return x < MAX_POSITION && y < MAX_POSITION && x >= 0 && y >= 0;
+bool Position::isPositionValid(const unsigned int x, const unsigned int y) {
+    return x < MAX_POSITION && y < MAX_POSITION;
 }
 
 bool Position::operator>(const Position &other) const {

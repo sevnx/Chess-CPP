@@ -3,8 +3,7 @@
 
 #include "../Piece.hpp"
 
-class Knight : public Piece {
-private:
+class Knight final : public Piece {
     enum {
         KNIGHT_VALUE = 3
     };

@@ -3,8 +3,7 @@
 
 #include "../Piece.hpp"
 
-class Rook : public Piece {
-private:
+class Rook final : public Piece {
     enum {
         ROOK_VALUE = 5
     };

@@ -14,7 +14,6 @@ enum class BoardType {
 };
 
 class ChessBoard {
-private:
     std::map<Position, std::unique_ptr<Piece>> pieces;
 
     std::map<PieceColor, Position> lastPositionMovedTo;
@@ -27,7 +26,9 @@ public:
 
     bool isPositionOccupied(Position position);
 
-    Piece &getPieceAt(Position position);
+    [[nodiscard]] Piece &getPieceAt(Position position) const;
+
+    [[nodiscard]] Position getLastPositionMovedTo(PieceColor color) const;
 
     void addPiece(std::unique_ptr<Piece> piece, Position position);
 
@@ -35,7 +36,11 @@ public:
 
     void movePiece(Position oldPosition, Position newPosition);
 
-    std::vector<PieceType> getPiecesOnBoard(PieceColor color);
+    [[nodiscard]] std::vector<PieceType> getPiecesOnBoard(PieceColor color) const;
+
+    ChessBoard(const ChessBoard &other);
+
+    ChessBoard &operator=(const ChessBoard &other);
 
     ~ChessBoard() = default;
 };

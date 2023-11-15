@@ -3,8 +3,7 @@
 
 #include "../Piece.hpp"
 
-class Queen : public Piece {
-private:
+class Queen final : public Piece {
     enum {
         QUEEN_VALUE = 9
     };

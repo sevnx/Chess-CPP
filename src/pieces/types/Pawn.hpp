@@ -3,8 +3,7 @@
 
 #include "../Piece.hpp"
 
-class Pawn : public Piece {
-private:
+class Pawn final : public Piece {
     enum {
         PAWN_VALUE = 1,
     };

@@ -3,8 +3,7 @@
 
 #include "../Piece.hpp"
 
-class King : public Piece {
-private:
+class King final : public Piece {
     enum {
         KING_VALUE = 0
     };

@@ -10,7 +10,6 @@ enum class PieceType {
 };
 
 class Piece {
-private:
     PieceColor color;
     PieceType type;
     unsigned int value;

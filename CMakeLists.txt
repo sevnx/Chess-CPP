@@ -40,12 +40,13 @@ add_executable(Chess_CPP
         src/board/move-validation/MoveValidator.cpp
         src/board/move-validation/MoveValidator.hpp
         src/board/move-validation/MoveTypes.hpp
-        src/board/move-validation/AttackedPositionChecker.hpp
-        src/board/move-validation/AttackedPositionChecker.cpp
-        src/board/move-validation/MoveLegalityChecker.cpp
-        src/board/move-validation/MoveLegalityChecker.hpp
+        src/board/move-validation/PositionAttackChecker.hpp
+        src/board/move-validation/PositionAttackChecker.cpp
         src/board/position-getter/BoardPositionGetter.hpp
         src/board/position-getter/BoardPositionGetter.cpp
         src/board/move-validation/MovePossibilityChecker.cpp
         src/board/move-validation/MovePossibilityChecker.hpp
+        src/board/move-validation/MoveTypes.cpp
+        src/board/move-validation/MoveEndGameChecker.cpp
+        src/board/move-validation/MoveEndGameChecker.hpp
 )

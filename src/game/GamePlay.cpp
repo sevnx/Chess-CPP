@@ -8,19 +8,19 @@ void GamePlay::startGame() {
     GamePlay game;
     while (!game.isGameOver()) {
         game.turn();
+        game.nextTurn();
     }
 }
 
 GamePlay::GameState GamePlay::getGameState() {
-    return GamePlay::GameState::IN_PROGRESS;
+    return GameState::IN_PROGRESS;
 }
 
 void GamePlay::turn() {
-    nextTurn();
 }
 
 bool GamePlay::isGameOver() {
-    return getGameState() != GamePlay::GameState::IN_PROGRESS;
+    return getGameState() != GameState::IN_PROGRESS;
 }
 
 void GamePlay::nextTurn() {
