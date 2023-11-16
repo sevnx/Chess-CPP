@@ -4,6 +4,7 @@
 #include "../board/ChessBoard.hpp"
 #include "../gui/ChessBoardView.hpp"
 #include "../gui/PieceView.hpp"
+#include "../board/move-validation/MoveEndGameChecker.hpp"
 
 class GamePlay {
     enum class GameState {

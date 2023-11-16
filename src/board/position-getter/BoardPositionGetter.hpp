@@ -6,7 +6,7 @@
 #include "board/move-validation/MoveTypes.hpp"
 
 class BoardPositionGetter {
-    ChessBoard &board;
+    const ChessBoard &board;
 
     static void populatePositionsInBetweenDiagonally(std::vector<Position> &positions,
                                                      const std::pair<Position, Position> &fromTo);
@@ -15,7 +15,7 @@ class BoardPositionGetter {
                                                          const std::pair<Position, Position> &fromTo);
 
 public:
-    explicit BoardPositionGetter(ChessBoard &board);
+    explicit BoardPositionGetter(const ChessBoard &board);
 
     [[nodiscard]] Position getFirstPiecePosition(PieceColor color, PieceType type) const;
 

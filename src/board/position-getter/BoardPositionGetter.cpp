@@ -1,6 +1,6 @@
 #include "BoardPositionGetter.hpp"
 
-BoardPositionGetter::BoardPositionGetter(ChessBoard &board) : board(board) {}
+BoardPositionGetter::BoardPositionGetter(const ChessBoard &board) : board(board) {}
 
 Position BoardPositionGetter::getFirstPiecePosition(const PieceColor color, const PieceType type) const {
     for (int i = 0; i < Position::MAX_POSITION; i++)

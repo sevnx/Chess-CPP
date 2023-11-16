@@ -49,4 +49,6 @@ add_executable(Chess_CPP
         src/board/move-validation/MoveTypes.cpp
         src/board/move-validation/MoveEndGameChecker.cpp
         src/board/move-validation/MoveEndGameChecker.hpp
+        src/board/move-getter/BoardPossibleMoveGetter.cpp
+        src/board/move-getter/BoardPossibleMoveGetter.hpp
 )

@@ -1,7 +1,5 @@
 #include "MoveEndGameChecker.hpp"
 
-#include "PositionAttackChecker.hpp"
-
 
 bool MoveEndGameChecker::isCheck(ChessBoard& board, PieceColor color) {
     const BoardPositionGetter positionGetter(board);
@@ -17,7 +15,16 @@ bool MoveEndGameChecker::isCheckAfterMove(ChessBoard& board, PieceColor color, i
 }
 
 bool MoveEndGameChecker::isCheckmate(ChessBoard& board, PieceColor color) {
-    // TODO: implement
+    const BoardPositionGetter positionGetter(board);
+    const Position kingPosition = positionGetter.getFirstPiecePosition(color, PieceType::KING);
+    const std::vector<Position> kingPossibleMove = BoardPossibleMoveGetter::getPossibleMoveForKing
+            (board, kingPosition.x, kingPosition.y, board.getPieceAt(kingPosition));
+    for (auto& move : kingPossibleMove) {
+        if (!isCheckAfterMove(board, color, kingPosition.x, kingPosition.y, move.x, move.y)) {
+            return false;
+        }
+    }
+    return true;
 }
 
 bool MoveEndGameChecker::isCheckmateAfterMove(ChessBoard& board, PieceColor color, int fromX, int fromY, int toX,
@@ -28,7 +35,16 @@ bool MoveEndGameChecker::isCheckmateAfterMove(ChessBoard& board, PieceColor colo
 }
 
 bool MoveEndGameChecker::isStalemate(ChessBoard& board, PieceColor color) {
+    const std::vector<std::pair<Position, Position>> possibleMoves = BoardPossibleMoveGetter::getPossibleMoves(board, color);
+    for (auto& [from, to] : possibleMoves) {
+        if (!isCheckAfterMove(board, color, from.x, from.y, to.x, to.y)) {
+            return false;
+        }
+    }
+    return true;
 }
 
 bool MoveEndGameChecker::isDraw(ChessBoard& board) {
+    // TODO: Implement this
+    return false;
 }

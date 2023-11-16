@@ -30,7 +30,7 @@ void ChessBoard::movePiece(const Position oldPosition, Position newPosition) {
     addPiece(std::move(movedPiece), newPosition);
 }
 
-bool ChessBoard::isPositionOccupied(const Position position) {
+bool ChessBoard::isPositionOccupied(const Position position) const {
     return pieces.find(position) != pieces.end();
 }
 

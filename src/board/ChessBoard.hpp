@@ -24,7 +24,7 @@ class ChessBoard {
 public:
     explicit ChessBoard(BoardType type);
 
-    bool isPositionOccupied(Position position);
+    [[nodiscard]] bool isPositionOccupied(Position position) const;
 
     [[nodiscard]] Piece &getPieceAt(Position position) const;
 

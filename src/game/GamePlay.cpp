@@ -1,8 +1,9 @@
 #include "GamePlay.hpp"
+#include <iostream>
 
-GamePlay::GamePlay(): board(BoardType::DEFAULT_CHESS_BOARD), turnColor(PieceColor::WHITE) {
+#include <move-validation/MoveEndGameChecker.hpp>
 
-}
+GamePlay::GamePlay(): board(BoardType::DEFAULT_CHESS_BOARD), turnColor(PieceColor::WHITE) {}
 
 void GamePlay::startGame() {
     GamePlay game;
@@ -13,10 +14,18 @@ void GamePlay::startGame() {
 }
 
 GamePlay::GameState GamePlay::getGameState() {
+    if (MoveEndGameChecker::isCheckmate(board, turnColor)) {
+        return GameState::CHECKMATE;
+    } if (MoveEndGameChecker::isStalemate(board, turnColor)) {
+        return GameState::STALEMATE;
+    } if (MoveEndGameChecker::isDraw(board)) {
+        return GameState::DRAW;
+    }
     return GameState::IN_PROGRESS;
 }
 
 void GamePlay::turn() {
+
 }
 
 bool GamePlay::isGameOver() {
