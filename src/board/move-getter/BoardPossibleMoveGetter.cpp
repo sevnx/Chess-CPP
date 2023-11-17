@@ -20,18 +20,24 @@ std::vector<Position> BoardPossibleMoveGetter::getPossibleMoveForPiece(const Che
     }
 }
 
-std::vector<Position> BoardPossibleMoveGetter::getPossibleMoveForPawn(const ChessBoard &board, int x, int y, const Piece& piece) {
+std::vector<Position> BoardPossibleMoveGetter::getPossibleMoveForPawn(const ChessBoard &board, const int x, const int y, const Piece& piece) {
     std::vector<Position> possibleMoves;
     constexpr int DEFAULT_PAWN_MOVE = 1, PAWN_DOUBLE_MOVE = 2;
-    const int direction = piece.getColor() == PieceColor::WHITE ? 1 : -1;
-    if (!board.isPositionOccupied({x, y + direction}))
-        possibleMoves.emplace_back(x, y + direction);
-    if (board.isPositionOccupied({x + DEFAULT_PAWN_MOVE, y + direction}))
-        possibleMoves.emplace_back(x + DEFAULT_PAWN_MOVE, y + direction);
-    if (board.isPositionOccupied({x - DEFAULT_PAWN_MOVE, y + direction}))
-        possibleMoves.emplace_back(x - DEFAULT_PAWN_MOVE, y + direction);
+    const int direction = piece.getColor() == PieceColor::BLACK ? 1 : -1;
+    int xTmp, yTmp;
+
+    xTmp = x, yTmp = y + direction;
+    if (Position::isPositionValid(xTmp, yTmp) && !board.isPositionOccupied({xTmp, yTmp}))
+        possibleMoves.emplace_back(xTmp, yTmp);
+    xTmp = x + DEFAULT_PAWN_MOVE, yTmp = y + direction;
+    if (Position::isPositionValid(xTmp, yTmp) && board.isPositionOccupied({x + DEFAULT_PAWN_MOVE, y + direction}))
+        possibleMoves.emplace_back(xTmp, yTmp);
+    xTmp = x - DEFAULT_PAWN_MOVE, yTmp = y + direction;
+    if (Position::isPositionValid(xTmp, yTmp) && board.isPositionOccupied({x - DEFAULT_PAWN_MOVE, y + direction}))
+        possibleMoves.emplace_back(xTmp, yTmp);
+    xTmp = x, yTmp = y + direction * PAWN_DOUBLE_MOVE;
     if (piece.isFirstMove() && !board.isPositionOccupied({x, y + direction * PAWN_DOUBLE_MOVE}))
-        possibleMoves.emplace_back(x, y + direction * PAWN_DOUBLE_MOVE);
+        possibleMoves.emplace_back(xTmp, yTmp);
     return possibleMoves;
 }
 
@@ -98,7 +104,6 @@ std::vector<Position> BoardPossibleMoveGetter::getPossibleMoveForKnight(const Ch
 
 std::vector<Position> BoardPossibleMoveGetter::getPossibleMoveForBishop(const ChessBoard& board, int x, int y, const Piece& piece) {
     std::vector<Position> possibleMoves;
-    const int direction = piece.getColor() == PieceColor::WHITE ? 1 : -1;
     for (int i = x, j = y; i < Position::MAX_POSITION && j < Position::MAX_POSITION; ++i, ++j) {
         if (board.isPositionOccupied({i, j})) {
             if (board.getPieceAt({i, j}).getColor() != piece.getColor())

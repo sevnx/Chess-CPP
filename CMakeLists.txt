@@ -33,10 +33,10 @@ add_executable(Chess_CPP
         main.cpp
         src/game/GamePlay.cpp
         src/game/GamePlay.hpp
-        src/gui/PieceView.cpp
-        src/gui/PieceView.hpp
-        src/gui/ChessBoardView.cpp
-        src/gui/ChessBoardView.hpp
+        src/user-interface/human-machine-interface/PieceView.cpp
+        src/user-interface/human-machine-interface/PieceView.hpp
+        src/user-interface/human-machine-interface/ChessBoardView.cpp
+        src/user-interface/human-machine-interface/ChessBoardView.hpp
         src/board/move-validation/MoveValidator.cpp
         src/board/move-validation/MoveValidator.hpp
         src/board/move-validation/MoveTypes.hpp
@@ -51,4 +51,7 @@ add_executable(Chess_CPP
         src/board/move-validation/MoveEndGameChecker.hpp
         src/board/move-getter/BoardPossibleMoveGetter.cpp
         src/board/move-getter/BoardPossibleMoveGetter.hpp
+        src/user-interface/human-machine-interface/ChessBoardPlayerInput.hpp
+        src/user-interface/text-based-interface/ChessBoardPlayerInterfaceTextBased.cpp
+        src/user-interface/text-based-interface/ChessBoardPlayerInterfaceTextBased.hpp
 )

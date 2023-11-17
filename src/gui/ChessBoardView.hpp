@@ -1,9 +1,0 @@
-#ifndef CHESS_CPP_CHESSBOARDVIEW_HPP
-#define CHESS_CPP_CHESSBOARDVIEW_HPP
-
-class ChessBoardView {
-
-};
-
-
-#endif //CHESS_CPP_CHESSBOARDVIEW_HPP

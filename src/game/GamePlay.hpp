@@ -2,8 +2,7 @@
 #define CHESS_CPP_GAMEPLAY_HPP
 
 #include "../board/ChessBoard.hpp"
-#include "../gui/ChessBoardView.hpp"
-#include "../gui/PieceView.hpp"
+#include "../user-interface/human-machine-interface/ChessBoardPlayerInput.hpp"
 #include "../board/move-validation/MoveEndGameChecker.hpp"
 
 class GamePlay {
@@ -21,8 +20,6 @@ class GamePlay {
     ChessBoard board;
 
     PieceColor turnColor = STARTING_TURN_COLOR;
-
-    ChessBoardView boardView;
 
     GameState getGameState();
 

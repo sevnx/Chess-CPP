@@ -5,7 +5,8 @@ BoardPositionGetter::BoardPositionGetter(const ChessBoard &board) : board(board)
 Position BoardPositionGetter::getFirstPiecePosition(const PieceColor color, const PieceType type) const {
     for (int i = 0; i < Position::MAX_POSITION; i++)
         for (int j = 0; j < Position::MAX_POSITION; j++) {
-            if (auto& piece = board.getPieceAt({i, j}); piece.getType() == type && piece.getColor() == color)
+            if (board.isPositionOccupied({i, j}) && board.getPieceAt({i, j}).getType() == type &&
+                board.getPieceAt({i, j}).getColor() == color)
                 return {i, j};
         }
     return {-1, -1};
@@ -15,7 +16,7 @@ std::vector<Position> BoardPositionGetter::getPiecesPositions(const PieceColor c
     std::vector<Position> positions;
     for (int i = 0; i < Position::MAX_POSITION; i++)
         for (int j = 0; j < Position::MAX_POSITION; j++)
-            if (board.getPieceAt({i, j}).getColor() == color)
+            if (board.isPositionOccupied({i,j}) && board.getPieceAt({i, j}).getColor() == color)
                 positions.emplace_back(i, j);
     return positions;
 }

@@ -41,11 +41,11 @@ class MovePossibleWithBoardStateChecker {
 
     static bool isMoveLegalForKnight();
 
-    bool isMoveLegalForBishop() const;
+    [[nodiscard]] bool isMoveLegalForBishop() const;
 
-    bool isMoveLegalForRook() const;
+    [[nodiscard]] bool isMoveLegalForRook() const;
 
-    bool isMoveLegalForQueen() const;
+    [[nodiscard]] bool isMoveLegalForQueen() const;
 
     static bool isMoveLegalForKing();
 

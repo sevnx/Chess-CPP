@@ -1,5 +1,7 @@
 #include "ChessBoard.hpp"
 
+#include <string>
+
 ChessBoard::ChessBoard()= default;
 
 ChessBoard::ChessBoard(const BoardType type) : ChessBoard() {
@@ -56,10 +58,10 @@ void ChessBoard::populateDefaultChessBoard() {
     auto iterBlack = defaultPiecesOrderBlack.begin();
 
     for (int i = 0; i < Position::MAX_POSITION && iterWhite != defaultPiecesOrderWhite.end() && iterBlack != defaultPiecesOrderBlack.end(); i++, ++iterWhite, ++iterBlack) {
-        constexpr unsigned int WHITE_PAWN_ROW = 1;
-        constexpr unsigned int WHITE_PIECES_ROW = 0;
-        constexpr unsigned int BLACK_PIECES_ROW = 7;
-        constexpr unsigned int BLACK_PAWN_ROW = 6;
+        constexpr unsigned int WHITE_PAWN_ROW = 6;
+        constexpr unsigned int WHITE_PIECES_ROW = 7;
+        constexpr unsigned int BLACK_PIECES_ROW = 0;
+        constexpr unsigned int BLACK_PAWN_ROW = 1;
         addPiece(PieceFactory::createPiece(*iterWhite, PieceColor::WHITE), {i, WHITE_PIECES_ROW});
         addPiece(PieceFactory::createPiece(*iterBlack, PieceColor::BLACK), {i, BLACK_PIECES_ROW});
         addPiece(PieceFactory::createPiece(PieceType::PAWN, PieceColor::WHITE), {i, WHITE_PAWN_ROW});
@@ -68,6 +70,8 @@ void ChessBoard::populateDefaultChessBoard() {
 }
 
 Piece &ChessBoard::getPieceAt(const Position position) const {
+    if (!isPositionOccupied(position))
+        throw std::invalid_argument("No piece at position " + std::to_string(position.x) + " " + std::to_string(position.y));
     return *pieces.at(position);
 }
 

@@ -1,5 +1,4 @@
 #include "GamePlay.hpp"
-#include <iostream>
 
 #include <move-validation/MoveEndGameChecker.hpp>
 
@@ -29,7 +28,7 @@ void GamePlay::turn() {
 }
 
 bool GamePlay::isGameOver() {
-    return getGameState() != GameState::IN_PROGRESS;
+    return getGameState() == GameState::IN_PROGRESS;
 }
 
 void GamePlay::nextTurn() {
