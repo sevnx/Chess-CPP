@@ -2,8 +2,9 @@
 #define CHESS_CPP_GAMEPLAY_HPP
 
 #include "../board/ChessBoard.hpp"
-#include "../user-interface/human-machine-interface/ChessBoardPlayerInput.hpp"
+#include "Player.hpp"
 #include "../board/move-validation/MoveEndGameChecker.hpp"
+#include "../user-interface/text-based-interface/ChessBoardConsoleView.hpp"
 
 class GamePlay {
     enum class GameState {
@@ -19,7 +20,13 @@ class GamePlay {
 
     ChessBoard board;
 
-    PieceColor turnColor = STARTING_TURN_COLOR;
+    std::unique_ptr<ChessBoardConsoleView> boardView;
+
+    std::unique_ptr<Player> whitePlayer;
+
+    std::unique_ptr<Player> blackPlayer;
+
+    PieceColor turnColor;
 
     GameState getGameState();
 
@@ -27,7 +34,10 @@ class GamePlay {
 
     void turn();
 
-    bool isGameOver();
+    [[nodicsard]] bool isGameOver();
+
+    [[nodiscard]] bool canPromotePawn(PieceColor color) const;
+
 public:
     static void startGame();
 

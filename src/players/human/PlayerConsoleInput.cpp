@@ -1,6 +1,6 @@
-#include "ChessBoardPlayerInterfaceTextBased.hpp"
+#include "PlayerConsoleInput.hpp"
 
-bool ChessBoardPlayerInterface_TextBased::canParsePosition(const std::string& positionString) {
+bool PlayerConsoleInput::canParsePosition(const std::string& positionString) {
     if (positionString.length() != 2)
         return false;
     if (positionString[0] < MIN_POSITION_CHAR || positionString[0] > MAX_POSITION_CHAR)
@@ -10,7 +10,7 @@ bool ChessBoardPlayerInterface_TextBased::canParsePosition(const std::string& po
     return true;
 }
 
-bool ChessBoardPlayerInterface_TextBased::canParsePieceType(const std::string& pieceTypeString) {
+bool PlayerConsoleInput::canParsePieceType(const std::string& pieceTypeString) {
     constexpr int NUMBER_OF_PIECE_TYPES = 4, LENGTH_OF_PIECE_TYPE_STRING = 1;
     if (pieceTypeString.length() != LENGTH_OF_PIECE_TYPE_STRING)
         return false;
@@ -20,7 +20,7 @@ bool ChessBoardPlayerInterface_TextBased::canParsePieceType(const std::string& p
     });
 }
 
-PieceType ChessBoardPlayerInterface_TextBased::parsePieceType(const std::string& pieceTypeString) {
+PieceType PlayerConsoleInput::parsePieceType(const std::string& pieceTypeString) {
     switch (pieceTypeString[0]) {
         case 'Q':
             return PieceType::QUEEN;
@@ -35,7 +35,11 @@ PieceType ChessBoardPlayerInterface_TextBased::parsePieceType(const std::string&
     }
 }
 
-Position ChessBoardPlayerInterface_TextBased::getCurrentPlayerMove() {
+Position PlayerConsoleInput::parsePosition(const std::string& positionString) {
+    return Position(positionString[0] - MIN_POSITION_CHAR, MAX_POSITION_NUM - positionString[1]);
+}
+
+std::pair<Position, Position> PlayerConsoleInput::getMove() {
     std::string positionFrom, positionTo;
     outputStream << "Enter position to move from and to (e.g. A1 A2): ";
     inputStream >> positionFrom >> positionTo;
@@ -44,10 +48,10 @@ Position ChessBoardPlayerInterface_TextBased::getCurrentPlayerMove() {
         inputStream >> positionFrom >> positionTo;
     }
     outputStream << std::endl << "Input accepted" << std::endl;
-    return {positionFrom[0] - 'A', positionFrom[1] - '1'};
+    return std::make_pair(parsePosition(positionFrom), parsePosition(positionTo));
 }
 
-PieceType ChessBoardPlayerInterface_TextBased::getPromotionPieceType() {
+PieceType PlayerConsoleInput::getPiecePromotionType() {
     std::string pieceTypeString;
     outputStream << "Enter piece type to promote to (Q (Queen), R (Rook), B (Bishop), N (Knight)): ";
     inputStream >> pieceTypeString;
@@ -55,11 +59,9 @@ PieceType ChessBoardPlayerInterface_TextBased::getPromotionPieceType() {
         outputStream << "Invalid input. Try again: ";
         inputStream >> pieceTypeString;
     }
-    outputStream << std::endl << "Input accepted" << std::endl;
     return parsePieceType(pieceTypeString);
 }
 
-ChessBoardPlayerInterface_TextBased::ChessBoardPlayerInterface_TextBased(std::istream& inputStream, std::ostream& outputStream)
+PlayerConsoleInput::PlayerConsoleInput(std::istream& inputStream, std::ostream& outputStream)
     : inputStream(inputStream),
       outputStream(outputStream) {}
-

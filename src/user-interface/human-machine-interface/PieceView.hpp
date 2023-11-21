@@ -4,14 +4,14 @@
 #include "pieces/Piece.hpp"
 
 class PieceView {
+protected:
     PieceType pieceType;
+public:
+    explicit PieceView(const Piece& piece);
 
-    public:
-        explicit PieceView(const Piece& piece);
+    virtual void drawPiece() = 0;
 
-        virtual void drawPiece() = 0;
-
-        virtual ~PieceView() = default;
+    virtual ~PieceView() = default;
 };
 
 

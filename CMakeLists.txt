@@ -51,7 +51,13 @@ add_executable(Chess_CPP
         src/board/move-validation/MoveEndGameChecker.hpp
         src/board/move-getter/BoardPossibleMoveGetter.cpp
         src/board/move-getter/BoardPossibleMoveGetter.hpp
-        src/user-interface/human-machine-interface/ChessBoardPlayerInput.hpp
-        src/user-interface/text-based-interface/ChessBoardPlayerInterfaceTextBased.cpp
-        src/user-interface/text-based-interface/ChessBoardPlayerInterfaceTextBased.hpp
+        src/game/Player.hpp
+        src/players/human/PlayerConsoleInput.cpp
+        src/players/human/PlayerConsoleInput.hpp
+        src/user-interface/text-based-interface/ChessBoardConsoleView.cpp
+        src/user-interface/text-based-interface/ChessBoardConsoleView.hpp
+        src/user-interface/text-based-interface/PieceConsoleView.cpp
+        src/user-interface/text-based-interface/PieceConsoleView.hpp
+        src/players/ai/PlayerStupidAI.cpp
+        src/players/ai/PlayerStupidAI.hpp
 )

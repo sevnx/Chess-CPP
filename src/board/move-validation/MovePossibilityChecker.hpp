@@ -25,7 +25,6 @@ class MovePossibleWithBoardStateChecker {
     Position from;
     Position to;
     Piece &pieceFrom;
-    Piece &pieceTo;
     MoveType moveType;
     BoardPositionGetter boardPositionGetter;
 
@@ -52,7 +51,7 @@ class MovePossibleWithBoardStateChecker {
     // Special moves accounted before everything else
     [[nodiscard]] bool isMoveLegalForCastling() const;
 
-    bool isMoveLegalForEnPassant();
+    bool isMoveLegalForEnPassant() const;
 
     // Pieces between
     [[nodiscard]] bool areTherePiecesBetween(ExistingMoves moveType) const;

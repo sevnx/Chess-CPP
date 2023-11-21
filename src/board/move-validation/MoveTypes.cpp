@@ -1,11 +1,14 @@
 #include "MoveTypes.hpp"
 
-ExistingMoveChecker::ExistingMoveChecker(ChessBoard& board, int fromX, int fromY, int toX, int toY):
-    board(board), pieceFrom(board.getPieceAt({fromX, fromY})), from(fromX, fromY), to(toX, toY),
-    pieceTo(board.getPieceAt({toX, toY})) {}
+ExistingMoveChecker::ExistingMoveChecker(ChessBoard& board, int fromX, int fromY, const int toX, const int toY):
+    board(board), from(fromX, fromY), to(toX, toY),
+    pieceFrom(board.getPieceAt({fromX, fromY})) {}
 
 bool ExistingMoveChecker::isMoveEnPassant() const {
-    const Piece& pieceTakenByEnPassant = board.getPieceAt({to.x, from.y});
+    const Position pieceEnPassantPosition = {to.x, from.y};
+    if (!board.isPositionOccupied(pieceEnPassantPosition))
+        return false;
+    const Piece& pieceTakenByEnPassant = board.getPieceAt(pieceEnPassantPosition);
     if (pieceFrom.getType() != PieceType::PAWN)
         return false;
     if (board.isPositionOccupied(to))
@@ -21,7 +24,9 @@ bool ExistingMoveChecker::isMoveEnPassant() const {
 
 bool ExistingMoveChecker::isMoveCastling() const {
     PieceType pieceFromType = pieceFrom.getType();
-    PieceType pieceToType = pieceTo.getType();
+    if (!board.isPositionOccupied(to))
+        return false;
+    PieceType pieceToType = board.getPieceAt(to).getType();
     if (pieceFromType < pieceToType)
         std::swap(pieceFromType, pieceToType);
     if (pieceFromType != PieceType::KING || pieceToType != PieceType::ROOK)

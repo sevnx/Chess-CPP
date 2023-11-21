@@ -24,7 +24,6 @@ class ExistingMoveChecker {
     Position from;
     Position to;
     Piece& pieceFrom;
-    Piece& pieceTo;
 
     ExistingMoveChecker(ChessBoard& board, int fromX, int fromY, int toX, int toY);
 

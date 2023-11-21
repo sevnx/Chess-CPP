@@ -1,6 +1,6 @@
 #include "MovePossibilityChecker.hpp"
 
-bool MovePossibilityChecker::isMovePossible(ChessBoard &board, int fromX, int fromY, int toX, int toY) {
+bool MovePossibilityChecker::isMovePossible(ChessBoard &board, int fromX, int fromY, const int toX, const int toY) {
     Piece &pieceFrom = board.getPieceAt({fromX, fromY});
     return MovePossibleWithBoardStateChecker::isMoveLegal(board, fromX, fromY, toX, toY)
     && CorrectMoveForPieceChecker::isMoveCorrect(pieceFrom, fromX, fromY, toX, toY);
@@ -10,8 +10,7 @@ bool MovePossibilityChecker::isMovePossible(ChessBoard &board, int fromX, int fr
 
 MovePossibleWithBoardStateChecker::MovePossibleWithBoardStateChecker(ChessBoard &board, int fromX, int fromY, int toX, int toY):
     board(board), pieceFrom(board.getPieceAt({fromX, fromY})), from(fromX, fromY), to(toX, toY),
-    pieceTo(board.getPieceAt({toX, toY})), boardPositionGetter(board),
-    moveType(ExistingMoveChecker::getMoveType(board, fromX, fromY, toX, toY)) {}
+    boardPositionGetter(board), moveType(ExistingMoveChecker::getMoveType(board, fromX, fromY, toX, toY)) {}
 
 
 bool MovePossibleWithBoardStateChecker::isMoveLegal() {
@@ -63,8 +62,8 @@ bool MovePossibleWithBoardStateChecker::isMoveLegalForPawn() {
                && !areTherePiecesBetween(ExistingMoves::STRAIGHT);
     }
     if (distanceX == 1 && distanceY == 1) {
-        return board.isPositionOccupied({to.x, to.y})
-               && pieceFrom.getColor() != pieceTo.getColor();
+        return board.isPositionOccupied(to)
+               && pieceFrom.getColor() != board.getPieceAt(to).getColor();
     }
     return false;
 }
@@ -90,19 +89,26 @@ bool MovePossibleWithBoardStateChecker::isMoveLegalForKing() {
 }
 
 bool MovePossibleWithBoardStateChecker::isMoveLegalForAnyMove() const {
-    return pieceFrom.getColor() != pieceTo.getColor();
+    if (!board.isPositionOccupied(to))
+        return true;
+    return pieceFrom.getColor() != board.getPieceAt(to).getColor();
 }
 
 bool MovePossibleWithBoardStateChecker::isMoveLegalForCastling() const {
-    if (pieceFrom.getMoveCount() != 0 || pieceTo.getMoveCount() != 0)
+    if (!board.isPositionOccupied(to))
+        return false;
+    if (pieceFrom.getMoveCount() != 0 || board.getPieceAt(to).getMoveCount() != 0)
         return false;
     if (areTherePiecesBetween(ExistingMoves::STRAIGHT))
         return false;
     return true;
 }
 
-bool MovePossibleWithBoardStateChecker::isMoveLegalForEnPassant() {
-    const Piece &pieceTakenByEnPassant = board.getPieceAt({to.x, from.y});
+bool MovePossibleWithBoardStateChecker::isMoveLegalForEnPassant() const {
+    const Position enPassantPosition = {to.x, from.y};
+    if (!board.isPositionOccupied(enPassantPosition))
+        return false;
+    const Piece &pieceTakenByEnPassant = board.getPieceAt(enPassantPosition);
     return pieceTakenByEnPassant.getMoveCount() == 1
            && board.getLastPositionMovedTo(pieceTakenByEnPassant.getColor()) == Position(to.x, from.y);
 }
@@ -148,7 +154,7 @@ bool MovePossibleWithBoardStateChecker::areTherePiecesBetweenInStraightLine() co
     return false;
 }
 
-bool MovePossibleWithBoardStateChecker::isMoveLegal(ChessBoard &board, int fromX, int fromY, int toX, int toY) {
+bool MovePossibleWithBoardStateChecker::isMoveLegal(ChessBoard &board, const int fromX, const int fromY, const int toX, int toY) {
     MovePossibleWithBoardStateChecker check(board, fromX, fromY, toX, toY);
     return check.isMoveLegal();
 }
@@ -199,9 +205,9 @@ bool CorrectMoveForPieceChecker::isMoveForwardsByAtMostTwoCases() const {
     constexpr unsigned int maxDistance = 2;
     switch (pieceFrom.getColor()) {
         case PieceColor::WHITE:
-            return isMoveInOneByOneBox() && to.y - from.y <= maxDistance;
-        case PieceColor::BLACK:
             return isMoveInOneByOneBox() && from.y - to.y <= maxDistance;
+        case PieceColor::BLACK:
+            return isMoveInOneByOneBox() && to.y - from.y <= maxDistance;
     }
     return false;
 }
