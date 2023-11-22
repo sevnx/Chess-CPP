@@ -6,6 +6,7 @@
 class PieceView {
 protected:
     PieceType pieceType;
+    PieceColor pieceColor;
 public:
     explicit PieceView(const Piece& piece);
 

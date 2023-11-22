@@ -15,14 +15,11 @@ bool MoveEndGameChecker::isCheckAfterMove(const ChessBoard& board, const PieceCo
 }
 
 bool MoveEndGameChecker::isCheckmate(ChessBoard& board, const PieceColor color) {
-    const BoardPositionGetter positionGetter(board);
-    const Position kingPosition = positionGetter.getFirstPiecePosition(color, PieceType::KING);
-    const std::vector<Position> kingPossibleMove = BoardPossibleMoveGetter::getPossibleMoveForKing
-            (board, kingPosition.x, kingPosition.y, board.getPieceAt(kingPosition));
     if (!isCheck(board, color))
         return false;
-    for (auto& move : kingPossibleMove)
-        if (!isCheckAfterMove(board, color, kingPosition.x, kingPosition.y, move.x, move.y))
+    const auto possibleMoves = BoardPossibleMoveGetter::getPossibleMoves(board, color);
+    for (auto& [from, to]: possibleMoves)
+        if (!isCheckAfterMove(board, color, from.x, from.y, to.x, to.y))
             return true;
     return false;
 }

@@ -1,7 +1,6 @@
 #include "MoveTypes.hpp"
 
-ExistingMoveChecker::ExistingMoveChecker(ChessBoard& board, int fromX, int fromY, const int toX, const int toY):
-    board(board), from(fromX, fromY), to(toX, toY),
+ExistingMoveChecker::ExistingMoveChecker(const ChessBoard& board, int fromX, int fromY, const int toX, const int toY): board(board), from(fromX, fromY), to(toX, toY),
     pieceFrom(board.getPieceAt({fromX, fromY})) {}
 
 bool ExistingMoveChecker::isMoveEnPassant() const {
@@ -34,7 +33,7 @@ bool ExistingMoveChecker::isMoveCastling() const {
     return true;
 }
 
-MoveType ExistingMoveChecker::getMoveType(ChessBoard& board, const int fromX, const int fromY, const int toX, const int toY) {
+MoveType ExistingMoveChecker::getMoveType(const ChessBoard& board, const int fromX, const int fromY, const int toX, const int toY) {
     const ExistingMoveChecker checker(board, fromX, fromY, toX, toY);
     if (checker.isMoveEnPassant())
         return MoveType::EN_PASSANT;

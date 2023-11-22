@@ -24,20 +24,31 @@ std::vector<Position> BoardPossibleMoveGetter::getPossibleMoveForPawn(const Ches
     std::vector<Position> possibleMoves;
     constexpr int DEFAULT_PAWN_MOVE = 1, PAWN_DOUBLE_MOVE = 2;
     const int direction = piece.getColor() == PieceColor::BLACK ? 1 : -1;
-    int xTmp, yTmp;
 
-    xTmp = x, yTmp = y + direction;
-    if (Position::isPositionValid(xTmp, yTmp) && !board.isPositionOccupied({xTmp, yTmp}))
-        possibleMoves.emplace_back(xTmp, yTmp);
-    xTmp = x + DEFAULT_PAWN_MOVE, yTmp = y + direction;
-    if (Position::isPositionValid(xTmp, yTmp) && board.isPositionOccupied({x + DEFAULT_PAWN_MOVE, y + direction}))
-        possibleMoves.emplace_back(xTmp, yTmp);
-    xTmp = x - DEFAULT_PAWN_MOVE, yTmp = y + direction;
-    if (Position::isPositionValid(xTmp, yTmp) && board.isPositionOccupied({x - DEFAULT_PAWN_MOVE, y + direction}))
-        possibleMoves.emplace_back(xTmp, yTmp);
-    xTmp = x, yTmp = y + direction * PAWN_DOUBLE_MOVE;
-    if (piece.isFirstMove() && !board.isPositionOccupied({x, y + direction * PAWN_DOUBLE_MOVE}))
-        possibleMoves.emplace_back(xTmp, yTmp);
+    auto addMoveIfValid = [&](const int xMove, const int yMove, const bool condition) {
+        if (condition)
+            possibleMoves.emplace_back(xMove, yMove);
+    };
+
+    // Add normal move for pawn (1 forward)
+    addMoveIfValid(0, direction,
+        Position::isPositionValid(x, y + direction) && !board.isPositionOccupied({x, y + direction}));
+
+    // Add capture move
+    for (const int xDiagonalCapture : {-1,1}) {
+        addMoveIfValid(xDiagonalCapture, direction,
+            Position::isPositionValid(x + xDiagonalCapture, y + direction)
+            && board.isPositionOccupied({x + xDiagonalCapture, y + direction})
+            && board.getPieceAt({x + xDiagonalCapture, y + direction}).getColor() != piece.getColor());
+        addMoveIfValid(xDiagonalCapture, direction,
+            Position::isPositionValid(x + xDiagonalCapture, y)
+            && ExistingMoveChecker::getMoveType(board, x, y, x + xDiagonalCapture, y + direction) == MoveType::EN_PASSANT);
+    }
+
+    // Add double move for pawn (2 forward)
+    addMoveIfValid(0, direction * PAWN_DOUBLE_MOVE,
+        piece.isFirstMove() && !board.isPositionOccupied({x, y + direction * PAWN_DOUBLE_MOVE})
+        && !board.isPositionOccupied({x, y + direction * DEFAULT_PAWN_MOVE}));
     return possibleMoves;
 }
 

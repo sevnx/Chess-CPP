@@ -1,9 +1,8 @@
 #include "Position.hpp"
 
-Position::Position(int x, int y) : x(x), y(y) {
-    if (!isPositionValid(x, y)) {
+Position::Position(const int x, const int y) : x(x), y(y) {
+    if (!isPositionValid(x, y))
         throw std::invalid_argument("Position out of bounds");
-    }
 }
 
 bool Position::operator==(const Position &other) const {
@@ -25,4 +24,3 @@ bool Position::isPositionValid(const unsigned int x, const unsigned int y) {
 bool Position::operator>(const Position &other) const {
     return !(*this < other) && *this != other;
 }
-

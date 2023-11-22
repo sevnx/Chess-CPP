@@ -36,24 +36,23 @@ PieceType PlayerConsoleInput::parsePieceType(const std::string& pieceTypeString)
 }
 
 Position PlayerConsoleInput::parsePosition(const std::string& positionString) {
-    return Position(positionString[0] - MIN_POSITION_CHAR, MAX_POSITION_NUM - positionString[1]);
+    return {positionString[0] - MIN_POSITION_CHAR, MAX_POSITION_NUM - positionString[1]};
 }
 
 std::pair<Position, Position> PlayerConsoleInput::getMove() {
     std::string positionFrom, positionTo;
-    outputStream << "Enter position to move from and to (e.g. A1 A2): ";
+    outputStream << "Your move (e.g. A1 A2): ";
     inputStream >> positionFrom >> positionTo;
     while (!canParsePosition(positionFrom) || !canParsePosition(positionTo)) {
         outputStream << "Invalid input. Try again: ";
         inputStream >> positionFrom >> positionTo;
     }
-    outputStream << std::endl << "Input accepted" << std::endl;
     return std::make_pair(parsePosition(positionFrom), parsePosition(positionTo));
 }
 
 PieceType PlayerConsoleInput::getPiecePromotionType() {
     std::string pieceTypeString;
-    outputStream << "Enter piece type to promote to (Q (Queen), R (Rook), B (Bishop), N (Knight)): ";
+    outputStream << "Promote piece to (Q (Queen), R (Rook), B (Bishop), N (Knight)): ";
     inputStream >> pieceTypeString;
     while (!canParsePieceType(pieceTypeString)) {
         outputStream << "Invalid input. Try again: ";

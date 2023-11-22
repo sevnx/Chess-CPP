@@ -2,6 +2,7 @@
 #define PIECECONSOLEVIEW_HPP
 #include "user-interface/human-machine-interface/PieceView.hpp"
 #include <iostream>
+#include "../lib/termcolor.hpp"
 
 class PieceConsoleView final : public PieceView {
     [[nodiscard]] char getPieceSymbol() const;
