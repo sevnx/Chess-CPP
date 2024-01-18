@@ -60,5 +60,7 @@ add_executable(Chess_CPP
         src/user-interface/text-based-interface/PieceConsoleView.hpp
         src/players/ai/PlayerStupidAI.cpp
         src/players/ai/PlayerStupidAI.hpp
-        lib/termcolor.hpp
+        src/board/move-validation/MoveDirection.hpp
+        src/board/move-validation/MoveDirection.cpp
+        lib/termcolor/termcolor.hpp
 )

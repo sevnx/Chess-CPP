@@ -3,6 +3,7 @@
 
 #include "board/ChessBoard.hpp"
 #include "position-getter/BoardPositionGetter.hpp"
+#include "board/move-validation/MoveDirection.hpp"
 
 /**
  * \brief Checks if a move is possible
@@ -51,7 +52,7 @@ class MovePossibleWithBoardStateChecker {
     // Special moves accounted before everything else
     [[nodiscard]] bool isMoveLegalForCastling() const;
 
-    bool isMoveLegalForEnPassant() const;
+    [[nodiscard]] bool isMoveLegalForEnPassant() const;
 
     // Pieces between
     [[nodiscard]] bool areTherePiecesBetween(ExistingMoves moveType) const;

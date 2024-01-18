@@ -1,6 +1,6 @@
 #include "Piece.hpp"
 
-Piece::Piece(PieceColor color, PieceType type, unsigned int value) :
+Piece::Piece(const PieceColor color, const PieceType type, const unsigned int value) :
         color(color), type(type), value(value), moveCount(0) {}
 
 PieceColor Piece::getColor() const {

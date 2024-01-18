@@ -5,7 +5,7 @@
 #include "move-validation/MoveValidator.hpp"
 #include "players/human/PlayerConsoleInput.hpp"
 
-GamePlay::GamePlay(): board(BoardType::DEFAULT_CHESS_BOARD), turnColor(STARTING_TURN_COLOR), whitePlayer(std::make_unique<PlayerConsoleInput>()), blackPlayer(std::make_unique<PlayerConsoleInput>()),
+GamePlay::GamePlay(): board(BoardType::DEFAULT_CHESS_BOARD), whitePlayer(std::make_unique<PlayerConsoleInput>()), blackPlayer(std::make_unique<PlayerConsoleInput>()), turnColor(STARTING_TURN_COLOR),
 boardView(std::make_unique<ChessBoardConsoleView>(board)) {}
 
 void GamePlay::startGame() {
@@ -13,6 +13,20 @@ void GamePlay::startGame() {
     while (!game.isGameOver()) {
         game.turn();
         game.nextTurn();
+    }
+    game.boardView->drawBoard();
+    switch (game.getGameState()) {
+        case GameState::CHECKMATE:
+            std::cout << "Checkmate" << std::endl;
+            break;
+        case GameState::STALEMATE:
+            std::cout << "Stalemate" << std::endl;
+            break;
+        case GameState::DRAW:
+            std::cout << "Draw" << std::endl;
+            break;
+        default:
+            break;
     }
 }
 

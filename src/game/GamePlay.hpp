@@ -34,7 +34,7 @@ class GamePlay {
 
     void turn();
 
-    [[nodicsard]] bool isGameOver();
+    bool isGameOver();
 
     [[nodiscard]] bool canPromotePawn(PieceColor color) const;
 

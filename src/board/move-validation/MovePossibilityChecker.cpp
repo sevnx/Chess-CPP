@@ -66,10 +66,7 @@ bool MovePossibleWithBoardStateChecker::isMoveLegalForPawn() {
     if (distanceX == 1 && distanceY == 1) {
         return board.isPositionOccupied(to) && pieceFrom.getColor() != board.getPieceAt(to).getColor();
     }
-    if (distanceX == 0 && distanceY == 1) {
-        return !board.isPositionOccupied(to);
-    }
-    return false;
+    return !board.isPositionOccupied(to);
 }
 
 bool MovePossibleWithBoardStateChecker::isMoveLegalForKnight() {
@@ -85,7 +82,9 @@ bool MovePossibleWithBoardStateChecker::isMoveLegalForRook() const {
 }
 
 bool MovePossibleWithBoardStateChecker::isMoveLegalForQueen() const {
-    return !areTherePiecesBetween(ExistingMoves::STRAIGHT) || !areTherePiecesBetween(ExistingMoves::DIAGONAL);
+    if (from.x != to.x && from.y != to.y)
+        return !areTherePiecesBetween(ExistingMoves::DIAGONAL);
+    return !areTherePiecesBetween(ExistingMoves::STRAIGHT);
 }
 
 bool MovePossibleWithBoardStateChecker::isMoveLegalForKing() {
@@ -124,21 +123,24 @@ bool MovePossibleWithBoardStateChecker::areTherePiecesBetween(const ExistingMove
         case ExistingMoves::DIAGONAL:
             return areTherePiecesBetweenDiagonally();
         default:
-            return false;
+            break;
     }
+    return false;
 }
 
 bool MovePossibleWithBoardStateChecker::areTherePiecesBetweenDiagonally() const {
-    int x = from.x + 1, y = from.y + 1;
-    const int xDirection = to.y > from.y ? 1 : -1;
-    const int yDirection = to.x > from.x ? 1 : -1;
+    const int directionX = from.x < to.x ? 1 : -1;
+    const int directionY = from.y < to.y ? 1 : -1;
+    int x = from.x + directionX;
+    int y = from.y + directionY;
+
     while (x != to.x && y != to.y) {
         if (!Position::isPositionValid(x, y))
             return false;
         if (board.isPositionOccupied({x, y}))
             return true;
-        x += xDirection;
-        y += yDirection;
+        x += directionX;
+        y += directionY;
     }
     return false;
 }
@@ -198,16 +200,28 @@ bool CorrectMoveForPieceChecker::isMoveInOneByOneBox() const {
 
 bool CorrectMoveForPieceChecker::isMoveForwardsOrSidewaysByOneCase() const {
     constexpr unsigned int maxDistance = 1;
-    const int distanceX = std::abs(from.x - to.x);
-    const int distanceY = pieceFrom.getColor() == PieceColor::WHITE ? from.y - to.y : to.y - from.y;
-    return distanceY == maxDistance && distanceX <= maxDistance;
+    const auto direction = getMoveDirection(from.y, to.y);
+    const int distance = std::abs(from.y - to.y);
+    switch (pieceFrom.getColor()) {
+        case PieceColor::WHITE:
+            return (isMoveInOneByOneBox() && distance == maxDistance) && direction == MoveDirection::FROM_WHITE_TO_BLACK;
+        case PieceColor::BLACK:
+            return (isMoveInOneByOneBox() && distance == maxDistance) && direction == MoveDirection::FROM_BLACK_TO_WHITE;
+    }
+    return false;
 }
 
 bool CorrectMoveForPieceChecker::isMoveForwardsByAtMostTwoCases() const {
     constexpr unsigned int maxDistance = 2;
-    const int distanceX = std::abs(from.x - to.x);
-    const int distanceY = pieceFrom.getColor() == PieceColor::WHITE ? from.y - to.y : to.y - from.y;
-    return distanceX == 0 && distanceY <= maxDistance && distanceY > 0;
+    const int distance = std::abs(from.y - to.y);
+    const auto direction = getMoveDirection(from.y, to.y);
+    switch (pieceFrom.getColor()) {
+        case PieceColor::WHITE:
+            return (isMoveInOneByOneBox() || distance <= maxDistance) && direction == MoveDirection::FROM_WHITE_TO_BLACK;
+        case PieceColor::BLACK:
+            return (isMoveInOneByOneBox() || distance <= maxDistance) && direction == MoveDirection::FROM_BLACK_TO_WHITE;
+    }
+    return false;
 }
 
 bool CorrectMoveForPieceChecker::isMoveCorrectForPiece() const {
@@ -233,11 +247,9 @@ bool CorrectMoveForPieceChecker::isMoveCorrectForPiece() const {
 
 
 bool CorrectMoveForPieceChecker::isMoveCorrectForPawn() const {
-    if (isMoveForwardsOrSidewaysByOneCase())
-        return true;
     if (pieceFrom.isFirstMove())
-        return isMoveForwardsByAtMostTwoCases();
-    return false;
+        return isMoveForwardsByAtMostTwoCases() || isMoveForwardsOrSidewaysByOneCase();
+    return isMoveForwardsOrSidewaysByOneCase();
 }
 
 bool CorrectMoveForPieceChecker::isMoveCorrectForRook() const {

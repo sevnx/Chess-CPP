@@ -12,8 +12,8 @@
 #ifndef TERMCOLOR_HPP_
 #define TERMCOLOR_HPP_
 
-#include <iostream>
 #include <cstdint>
+#include <iostream>
 
 // Detect target's platform and set some macros in order to wrap platform
 // specific code this library depends on.

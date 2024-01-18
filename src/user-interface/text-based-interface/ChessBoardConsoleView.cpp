@@ -13,47 +13,34 @@ void printOutNewLine() {
     std::cout << '\n';
 }
 
-void printOutEmptyLine() {
-    printOutNewLine();
-}
-void printOutEmptyPiece() {
-    std::cout << "x";
+void ChessBoardConsoleView::printHorizontalLabels() {
+    std::cout << "   A   B   C   D   E   F   G   H\n";
 }
 
-void printOutSpaces(const int numberOfSpaces) {
-    for (int i = 0; i < numberOfSpaces; ++i) {
-        printOutSpace();
+void ChessBoardConsoleView::printSquare(const int x, const int y) const {
+    std::cout << " "; // print vertical line
+    if (chessBoard.isPositionOccupied(Position(x, y))) {
+        const auto& piece = chessBoard.getPieceAt(Position(x, y));
+        PieceConsoleView pieceView(piece);
+        pieceView.drawPiece();
+    } else {
+        std::cout << " ";
     }
+    std::cout << " |"; // print vertical line
 }
 
-void printOutHeader() {
-    printOutSpaces(4);
-    for (unsigned char i = 0; i < Position::MAX_POSITION; ++i) {
-        char letter = 'A' + i;
-        std::cout << letter << " ";
+void ChessBoardConsoleView::printRow(const int y) const {
+    std::cout << Position::MAX_POSITION - y << " ";
+    for (int x = 0; x < Position::MAX_POSITION; ++x) {
+        printSquare(x, y);
     }
-    printOutNewLine();
+    std::cout << " " << Position::MAX_POSITION - y << '\n';
 }
 
 void ChessBoardConsoleView::drawBoard() {
-    printOutHeader();
-    printOutEmptyLine();
+    printHorizontalLabels();
     for (int y = 0; y < Position::MAX_POSITION; ++y) {
-        std::cout << Position::MAX_POSITION - y << " ";
-        printOutSpaces(2);
-        for (int x = 0; x < Position::MAX_POSITION; ++x) {
-            if (chessBoard.isPositionOccupied(Position(x, y))) {
-                auto&piece = chessBoard.getPieceAt(Position(x, y));
-                PieceConsoleView pieceView(piece);
-                pieceView.drawPiece();
-            }
-            else {
-                printOutEmptyPiece();
-            }
-            printOutSpace();
-        }
-        printOutNewLine();
+        printRow(y);
     }
-    printOutEmptyLine();
-    printOutHeader();
+    printHorizontalLabels();
 }
