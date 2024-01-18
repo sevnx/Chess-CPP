@@ -7,8 +7,6 @@
 
 class BoardPossibleMoveGetter {
     public:
-        static std::vector<Position> getPossibleMoveForPiece(const ChessBoard& board, int x, int y, const Piece& piece);
-
         static std::vector<Position> getPossibleMoveForPawn(const ChessBoard& board, int x, int y, const Piece& piece);
 
         static std::vector<Position> getPossibleMoveForRook(const ChessBoard& board, int x, int y, const Piece& piece);

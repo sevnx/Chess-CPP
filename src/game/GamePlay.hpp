@@ -34,7 +34,9 @@ class GamePlay {
 
     void turn();
 
-    [[nodicsard]] bool isGameOver();
+    void executeMove(const std::pair<Position, Position>& move);
+
+    bool isGameOver();
 
     [[nodiscard]] bool canPromotePawn(PieceColor color) const;
 

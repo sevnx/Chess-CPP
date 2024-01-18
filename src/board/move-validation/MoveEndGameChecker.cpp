@@ -1,46 +1,30 @@
 #include "MoveEndGameChecker.hpp"
 
 
-bool MoveEndGameChecker::isCheck(ChessBoard& board, const PieceColor color) {
-    const BoardPositionGetter positionGetter(board);
-    const PositionAttackChecker attackedPositionChecker(board, color);
-    const Position kingPosition = positionGetter.getFirstPiecePosition(color, PieceType::KING);
-    return attackedPositionChecker.isPositionAttacked(kingPosition);
+bool MoveEndGameChecker::isCheck(ChessBoard&board, const PieceColor color) {
+    const Position kingPosition = BoardPositionGetter(board).getFirstPiecePosition(color, PieceType::KING);
+    return PositionAttackChecker(board, color).isPositionAttacked(kingPosition);
 }
 
-bool MoveEndGameChecker::isCheckAfterMove(const ChessBoard& board, const PieceColor color, int fromX, int fromY, int toX, int toY) {
-    ChessBoard boardCopy = board;
-    boardCopy.movePiece({fromX, fromY}, {toX, toY});
-    return isCheck(boardCopy, color);
+bool MoveEndGameChecker::isCheckAfterMove(ChessBoard board, const PieceColor color, int fromX, int fromY, int toX,
+                                          int toY) {
+    board.movePiece({fromX, fromY}, {toX, toY});
+    return isCheck(board, color);
 }
 
-bool MoveEndGameChecker::isCheckmate(ChessBoard& board, const PieceColor color) {
+bool MoveEndGameChecker::isCheckmate(ChessBoard&board, const PieceColor color) {
     if (!isCheck(board, color))
         return false;
-    const auto possibleMoves = BoardPossibleMoveGetter::getPossibleMoves(board, color);
-    for (auto& [from, to]: possibleMoves)
-        if (!isCheckAfterMove(board, color, from.x, from.y, to.x, to.y))
+    for (const auto&[fst, snd]: BoardPossibleMoveGetter::getPossibleMoves(board, color))
+        if (!isCheckAfterMove(board, color, fst.x, fst.y, snd.x, snd.y))
             return true;
     return false;
 }
 
-bool MoveEndGameChecker::isCheckmateAfterMove(const ChessBoard& board, const PieceColor color, int fromX, int fromY, int toX, int toY) {
-    ChessBoard boardCopy = board;
-    boardCopy.movePiece({fromX, fromY}, {toX, toY});
-    return isCheckmate(boardCopy, color);
+bool MoveEndGameChecker::isStalemate(const ChessBoard&board, const PieceColor color) {
+    return BoardPossibleMoveGetter::getPossibleMoves(board, color).empty();
 }
 
-bool MoveEndGameChecker::isStalemate(const ChessBoard& board, const PieceColor color) {
-    const std::vector<std::pair<Position, Position>> possibleMoves = BoardPossibleMoveGetter::getPossibleMoves(board, color);
-    for (auto& [from, to] : possibleMoves) {
-        if (!isCheckAfterMove(board, color, from.x, from.y, to.x, to.y)) {
-            return false;
-        }
-    }
-    return true;
-}
-
-bool MoveEndGameChecker::isDraw(ChessBoard& board) {
-    // TODO: Implement this
+bool MoveEndGameChecker::isDraw(ChessBoard&board) {
     return false;
 }

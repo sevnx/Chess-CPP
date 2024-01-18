@@ -20,13 +20,18 @@ char PieceConsoleView::getPieceSymbol() const {
     }
 }
 
-PieceConsoleView::PieceConsoleView(const Piece&piece) : PieceView(piece) {}
+PieceColor PieceConsoleView::getPieceColor() const {
+    return pieceColor;
+}
+
+PieceConsoleView::PieceConsoleView(const Piece&piece) : PieceView(piece) {
+}
 
 void PieceConsoleView::drawPiece() {
-    if (pieceColor == PieceColor::BLACK)
-        std::cout << termcolor::red;
-    else
+    if (getPieceColor() == PieceColor::WHITE)
         std::cout << termcolor::blue;
+    else
+        std::cout << termcolor::red;
     std::cout << getPieceSymbol() << termcolor::reset;
 }
 

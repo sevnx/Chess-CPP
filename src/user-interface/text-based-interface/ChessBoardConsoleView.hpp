@@ -9,6 +9,12 @@ public:
 
     void drawBoard() override;
 
+    static void printHorizontalLabels();
+
+    void printRow(int y) const;
+
+    void printSquare(int x, int y) const;
+
     ~ChessBoardConsoleView() override = default;
 };
 

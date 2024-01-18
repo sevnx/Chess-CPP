@@ -11,6 +11,8 @@ struct Position {
     int x;
     int y;
 
+    Position() = default;
+
     Position(int x, int y);
 
     static bool isPositionValid(unsigned int x, unsigned int y);

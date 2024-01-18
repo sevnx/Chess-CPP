@@ -32,9 +32,7 @@ class ExistingMoveChecker {
     [[nodiscard]] bool isMoveCastling() const;
 
 public:
-        static MoveType getMoveType(const ChessBoard& board, int fromX, int fromY, int toX, int toY);
+    static MoveType getMoveType(const ChessBoard& board, int fromX, int fromY, int toX, int toY);
 };
-
-MoveType getMoveType(ChessBoard& board, int fromX, int fromY, int toX, int toY);
 
 #endif //CHESS_CPP_MOVETYPES_HPP

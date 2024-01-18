@@ -16,15 +16,13 @@ MovePossibleWithBoardStateChecker::MovePossibleWithBoardStateChecker(ChessBoard 
 
 
 bool MovePossibleWithBoardStateChecker::isMoveLegal() {
-    if (!isMoveLegalForAnyMove())
-        return false;
     switch (moveType) {
         case MoveType::EN_PASSANT:
             return isMoveLegalForEnPassant();
         case MoveType::CASTLING:
             return isMoveLegalForCastling();
         case MoveType::NORMAL:
-            return isMoveLegalForNormalPieceMove();
+            return isMoveLegalForNormalPieceMove() && isMoveLegalForAnyMove();
     }
     return false;
 }
@@ -66,10 +64,7 @@ bool MovePossibleWithBoardStateChecker::isMoveLegalForPawn() {
     if (distanceX == 1 && distanceY == 1) {
         return board.isPositionOccupied(to) && pieceFrom.getColor() != board.getPieceAt(to).getColor();
     }
-    if (distanceX == 0 && distanceY == 1) {
-        return !board.isPositionOccupied(to);
-    }
-    return false;
+    return !board.isPositionOccupied(to);
 }
 
 bool MovePossibleWithBoardStateChecker::isMoveLegalForKnight() {
@@ -85,7 +80,9 @@ bool MovePossibleWithBoardStateChecker::isMoveLegalForRook() const {
 }
 
 bool MovePossibleWithBoardStateChecker::isMoveLegalForQueen() const {
-    return !areTherePiecesBetween(ExistingMoves::STRAIGHT) || !areTherePiecesBetween(ExistingMoves::DIAGONAL);
+    if (from.x != to.x && from.y != to.y)
+        return !areTherePiecesBetween(ExistingMoves::DIAGONAL);
+    return !areTherePiecesBetween(ExistingMoves::STRAIGHT);
 }
 
 bool MovePossibleWithBoardStateChecker::isMoveLegalForKing() {
@@ -103,9 +100,7 @@ bool MovePossibleWithBoardStateChecker::isMoveLegalForCastling() const {
         return false;
     if (pieceFrom.getMoveCount() != 0 || board.getPieceAt(to).getMoveCount() != 0)
         return false;
-    if (areTherePiecesBetween(ExistingMoves::STRAIGHT))
-        return false;
-    return true;
+    return !areTherePiecesBetween(ExistingMoves::STRAIGHT);
 }
 
 bool MovePossibleWithBoardStateChecker::isMoveLegalForEnPassant() const {
@@ -113,8 +108,9 @@ bool MovePossibleWithBoardStateChecker::isMoveLegalForEnPassant() const {
     if (!board.isPositionOccupied(enPassantPosition))
         return false;
     const Piece &pieceTakenByEnPassant = board.getPieceAt(enPassantPosition);
+    const Position& lastPositionMovedTo = board.getLastPositionMovedTo(pieceTakenByEnPassant.getColor());
     return pieceTakenByEnPassant.getMoveCount() == 1
-           && board.getLastPositionMovedTo(pieceTakenByEnPassant.getColor()) == Position(to.x, from.y);
+           && lastPositionMovedTo == enPassantPosition;
 }
 
 bool MovePossibleWithBoardStateChecker::areTherePiecesBetween(const ExistingMoves moveType) const {
@@ -124,41 +120,39 @@ bool MovePossibleWithBoardStateChecker::areTherePiecesBetween(const ExistingMove
         case ExistingMoves::DIAGONAL:
             return areTherePiecesBetweenDiagonally();
         default:
-            return false;
+            break;
     }
+    return false;
 }
 
 bool MovePossibleWithBoardStateChecker::areTherePiecesBetweenDiagonally() const {
-    int x = from.x + 1, y = from.y + 1;
-    const int xDirection = to.y > from.y ? 1 : -1;
-    const int yDirection = to.x > from.x ? 1 : -1;
+    const int directionX = from.x < to.x ? 1 : -1;
+    const int directionY = from.y < to.y ? 1 : -1;
+    int x = from.x + directionX;
+    int y = from.y + directionY;
+
     while (x != to.x && y != to.y) {
         if (!Position::isPositionValid(x, y))
             return false;
         if (board.isPositionOccupied({x, y}))
             return true;
-        x += xDirection;
-        y += yDirection;
+        x += directionX;
+        y += directionY;
     }
     return false;
 }
 
+
 bool MovePossibleWithBoardStateChecker::areTherePiecesBetweenInStraightLine() const {
-    int x = from.x, y = from.y;
-    while (x != to.x && y != to.y) {
+    const int dx = to.x - from.x ? (to.x - from.x) / abs(to.x - from.x) : 0;
+    const int dy = to.y - from.y ? (to.y - from.y) / abs(to.y - from.y) : 0;
+    for (int x = from.x + dx, y = from.y + dy; x != to.x || y != to.y; x += dx, y += dy) {
         if (board.isPositionOccupied({x, y}))
             return true;
-        if (x < to.x)
-            x++;
-        else if (x > to.x)
-            x--;
-        else if (y < to.y)
-            y++;
-        else
-            y--;
     }
     return false;
 }
+
 
 bool MovePossibleWithBoardStateChecker::isMoveLegal(ChessBoard &board, const int fromX, const int fromY, const int toX, int toY) {
     MovePossibleWithBoardStateChecker check(board, fromX, fromY, toX, toY);
@@ -198,16 +192,28 @@ bool CorrectMoveForPieceChecker::isMoveInOneByOneBox() const {
 
 bool CorrectMoveForPieceChecker::isMoveForwardsOrSidewaysByOneCase() const {
     constexpr unsigned int maxDistance = 1;
-    const int distanceX = std::abs(from.x - to.x);
-    const int distanceY = pieceFrom.getColor() == PieceColor::WHITE ? from.y - to.y : to.y - from.y;
-    return distanceY == maxDistance && distanceX <= maxDistance;
+    const auto direction = getMoveDirection(from.y, to.y);
+    const int distance = std::abs(from.y - to.y);
+    switch (pieceFrom.getColor()) {
+        case PieceColor::WHITE:
+            return (isMoveInOneByOneBox() && distance == maxDistance) && direction == MoveDirection::FROM_WHITE_TO_BLACK;
+        case PieceColor::BLACK:
+            return (isMoveInOneByOneBox() && distance == maxDistance) && direction == MoveDirection::FROM_BLACK_TO_WHITE;
+    }
+    return false;
 }
 
 bool CorrectMoveForPieceChecker::isMoveForwardsByAtMostTwoCases() const {
     constexpr unsigned int maxDistance = 2;
-    const int distanceX = std::abs(from.x - to.x);
-    const int distanceY = pieceFrom.getColor() == PieceColor::WHITE ? from.y - to.y : to.y - from.y;
-    return distanceX == 0 && distanceY <= maxDistance && distanceY > 0;
+    const int distance = std::abs(from.y - to.y);
+    const auto direction = getMoveDirection(from.y, to.y);
+    switch (pieceFrom.getColor()) {
+        case PieceColor::WHITE:
+            return (isMoveInOneByOneBox() || distance <= maxDistance) && direction == MoveDirection::FROM_WHITE_TO_BLACK;
+        case PieceColor::BLACK:
+            return (isMoveInOneByOneBox() || distance <= maxDistance) && direction == MoveDirection::FROM_BLACK_TO_WHITE;
+    }
+    return false;
 }
 
 bool CorrectMoveForPieceChecker::isMoveCorrectForPiece() const {
@@ -233,11 +239,9 @@ bool CorrectMoveForPieceChecker::isMoveCorrectForPiece() const {
 
 
 bool CorrectMoveForPieceChecker::isMoveCorrectForPawn() const {
-    if (isMoveForwardsOrSidewaysByOneCase())
-        return true;
     if (pieceFrom.isFirstMove())
-        return isMoveForwardsByAtMostTwoCases();
-    return false;
+        return isMoveForwardsByAtMostTwoCases() || isMoveForwardsOrSidewaysByOneCase();
+    return isMoveForwardsOrSidewaysByOneCase();
 }
 
 bool CorrectMoveForPieceChecker::isMoveCorrectForRook() const {
