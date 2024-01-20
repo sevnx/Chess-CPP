@@ -30,9 +30,6 @@ add_executable(Chess_CPP
         src/pieces/PieceFactory.cpp
         src/board/ChessBoard.cpp
         src/board/Position.cpp
-        main.cpp
-        src/game/GamePlay.cpp
-        src/game/GamePlay.hpp
         src/user-interface/human-machine-interface/PieceView.cpp
         src/user-interface/human-machine-interface/PieceView.hpp
         src/user-interface/human-machine-interface/ChessBoardView.cpp

@@ -1,7 +1,7 @@
 #include "BoardPossibleMoveGetter.hpp"
 
-std::vector<Position> BoardPossibleMoveGetter::getPossibleMoveForPiece(const ChessBoard& board, const int x, const int y, const Piece& piece) {
-    switch (piece.getType()) {
+std::vector<Position> BoardPossibleMoveGetter::getPossibleMoveForPiece(const ChessBoard& board, const int x, const int y) {
+    switch (const Piece& piece = board.getPieceAt({x, y}); piece.getType()) {
         case PieceType::PAWN:
             return getPossibleMoveForPawn(board, x, y, piece);
         case PieceType::ROOK:
@@ -25,30 +25,14 @@ std::vector<Position> BoardPossibleMoveGetter::getPossibleMoveForPawn(const Ches
     constexpr int DEFAULT_PAWN_MOVE = 1, PAWN_DOUBLE_MOVE = 2;
     const int direction = piece.getColor() == PieceColor::BLACK ? 1 : -1;
 
-    auto addMoveIfValid = [&](const int xMove, const int yMove, const bool condition) {
-        if (condition)
-            possibleMoves.emplace_back(xMove, yMove);
-    };
-
-    // Add normal move for pawn (1 forward)
-    addMoveIfValid(0, direction,
-        Position::isPositionValid(x, y + direction) && !board.isPositionOccupied({x, y + direction}));
-
-    // Add capture move
-    for (const int xDiagonalCapture : {-1,1}) {
-        addMoveIfValid(xDiagonalCapture, direction,
-            Position::isPositionValid(x + xDiagonalCapture, y + direction)
-            && board.isPositionOccupied({x + xDiagonalCapture, y + direction})
-            && board.getPieceAt({x + xDiagonalCapture, y + direction}).getColor() != piece.getColor());
-        addMoveIfValid(xDiagonalCapture, direction,
-            Position::isPositionValid(x + xDiagonalCapture, y)
-            && ExistingMoveChecker::getMoveType(board, x, y, x + xDiagonalCapture, y + direction) == MoveType::EN_PASSANT);
-    }
-
-    // Add double move for pawn (2 forward)
-    addMoveIfValid(0, direction * PAWN_DOUBLE_MOVE,
-        piece.isFirstMove() && !board.isPositionOccupied({x, y + direction * PAWN_DOUBLE_MOVE})
-        && !board.isPositionOccupied({x, y + direction * DEFAULT_PAWN_MOVE}));
+    if (Position::isPositionValid(x, y + direction) && !board.isPositionOccupied({x, y + direction}))
+        possibleMoves.emplace_back(x, y + direction);
+    if (Position::isPositionValid(x + DEFAULT_PAWN_MOVE, y + direction) && board.isPositionOccupied({x + DEFAULT_PAWN_MOVE, y + direction}))
+        possibleMoves.emplace_back(x + DEFAULT_PAWN_MOVE, y + direction);
+    if (Position::isPositionValid(x - DEFAULT_PAWN_MOVE, y + direction) && board.isPositionOccupied({x - DEFAULT_PAWN_MOVE, y + direction}))
+        possibleMoves.emplace_back(x - DEFAULT_PAWN_MOVE, y + direction);
+    if (piece.isFirstMove() && !board.isPositionOccupied({x, y + direction * PAWN_DOUBLE_MOVE}))
+        possibleMoves.emplace_back(x, y + direction * PAWN_DOUBLE_MOVE);
     return possibleMoves;
 }
 
@@ -153,8 +137,7 @@ std::vector<Position> BoardPossibleMoveGetter::getPossibleMoveForBishop(const Ch
 std::vector<Position> BoardPossibleMoveGetter::getPossibleMoveForQueen(const ChessBoard& board, int x, int y, const Piece& piece) {
     auto moveForBishop = getPossibleMoveForBishop(board, x, y, piece);
     auto moveForRook = getPossibleMoveForRook(board, x, y, piece);
-    auto moves = std::move(moveForBishop);
-    moves.insert(moves.end(), moveForRook.begin(), moveForRook.end());
+    moveForBishop.insert(moveForBishop.end(), moveForRook.begin(), moveForRook.end());
     return moveForBishop;
 }
 
@@ -185,9 +168,4 @@ std::vector<std::pair<Position, Position>> BoardPossibleMoveGetter::getPossibleM
         for (auto &move : getPossibleMoveForPiece(board, piecePosition.x, piecePosition.y))
             possibleMoves.emplace_back(piecePosition, move);
     return possibleMoves;
-}
-
-std::vector<Position> BoardPossibleMoveGetter::getPossibleMoveForPiece(const ChessBoard &board, int x, int y) {
-    const Piece piece = board.getPieceAt({x, y});
-    return getPossibleMoveForPiece(board, x, y, piece);
 }

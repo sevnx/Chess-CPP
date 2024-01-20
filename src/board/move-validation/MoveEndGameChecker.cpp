@@ -31,8 +31,7 @@ bool MoveEndGameChecker::isCheckmateAfterMove(const ChessBoard& board, const Pie
 }
 
 bool MoveEndGameChecker::isStalemate(const ChessBoard& board, const PieceColor color) {
-    // TODO: Fix this
-    const std::vector<std::pair<Position, Position>> possibleMoves = BoardPossibleMoveGetter::getPossibleMoves(board, color);
+    const auto possibleMoves = BoardPossibleMoveGetter::getPossibleMoves(board, color);
     for (auto& [from, to] : possibleMoves) {
         if (!isCheckAfterMove(board, color, from.x, from.y, to.x, to.y)) {
             return false;
@@ -42,6 +41,5 @@ bool MoveEndGameChecker::isStalemate(const ChessBoard& board, const PieceColor c
 }
 
 bool MoveEndGameChecker::isDraw(ChessBoard& board) {
-    // TODO: Implement this
     return false;
 }

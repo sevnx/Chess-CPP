@@ -1,5 +1,6 @@
 #include "ChessBoard.hpp"
 
+#include <iostream>
 #include <string>
 
 ChessBoard::ChessBoard() = default;
@@ -22,14 +23,14 @@ void ChessBoard::removePieceAt(const Position position) {
     pieces.erase(position);
 }
 
-void ChessBoard::movePiece(const Position oldPosition, Position newPosition) {
+void ChessBoard::movePiece(const Position oldPosition, const Position newPosition) {
     if (!isPositionOccupied(oldPosition))
         throw std::invalid_argument("No piece at position");
-    PieceColor pieceFromColor = pieces[oldPosition]->getColor();
+    const PieceColor pieceFromColor = pieces[oldPosition]->getColor();
     auto movedPiece = std::move(pieces[oldPosition]);
     movedPiece->incrementMoveCount();
     removePieceAt(oldPosition);
-    lastPositionMovedTo.emplace(pieceFromColor, newPosition);
+    lastPositionMovedTo[pieceFromColor] = newPosition;
     addPiece(std::move(movedPiece), newPosition);
 }
 

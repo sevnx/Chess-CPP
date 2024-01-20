@@ -112,8 +112,9 @@ bool MovePossibleWithBoardStateChecker::isMoveLegalForEnPassant() const {
     if (!board.isPositionOccupied(enPassantPosition))
         return false;
     const Piece &pieceTakenByEnPassant = board.getPieceAt(enPassantPosition);
+    const Position& lastPositionMovedTo = board.getLastPositionMovedTo(pieceTakenByEnPassant.getColor());
     return pieceTakenByEnPassant.getMoveCount() == 1
-           && board.getLastPositionMovedTo(pieceTakenByEnPassant.getColor()) == Position(to.x, from.y);
+           && lastPositionMovedTo == enPassantPosition;
 }
 
 bool MovePossibleWithBoardStateChecker::areTherePiecesBetween(const ExistingMoves moveType) const {
@@ -145,22 +146,17 @@ bool MovePossibleWithBoardStateChecker::areTherePiecesBetweenDiagonally() const 
     return false;
 }
 
+
 bool MovePossibleWithBoardStateChecker::areTherePiecesBetweenInStraightLine() const {
-    int x = from.x, y = from.y;
-    while (x != to.x && y != to.y) {
+    const int dx = (to.x - from.x) ? (to.x - from.x) / abs(to.x - from.x) : 0;
+    const int dy = (to.y - from.y) ? (to.y - from.y) / abs(to.y - from.y) : 0;
+    for (int x = from.x + dx, y = from.y + dy; x != to.x || y != to.y; x += dx, y += dy) {
         if (board.isPositionOccupied({x, y}))
             return true;
-        if (x < to.x)
-            x++;
-        else if (x > to.x)
-            x--;
-        else if (y < to.y)
-            y++;
-        else
-            y--;
     }
     return false;
 }
+
 
 bool MovePossibleWithBoardStateChecker::isMoveLegal(ChessBoard &board, const int fromX, const int fromY, const int toX, int toY) {
     MovePossibleWithBoardStateChecker check(board, fromX, fromY, toX, toY);

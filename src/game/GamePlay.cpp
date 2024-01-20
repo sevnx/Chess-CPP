@@ -1,7 +1,7 @@
 #include "GamePlay.hpp"
 
-#include <move-validation/MoveEndGameChecker.hpp>
-
+#include "move-validation/MoveEndGameChecker.hpp"
+#include "move-validation/MoveTypes.hpp"
 #include "move-validation/MoveValidator.hpp"
 #include "players/human/PlayerConsoleInput.hpp"
 
@@ -47,13 +47,29 @@ void GamePlay::turn() {
     std::cout << "Turn: " << (turnColor == PieceColor::WHITE ? "White" : "Black") << std::endl;
     boardView->drawBoard();
     const auto& currentPlayer = turnColor == PieceColor::WHITE ? whitePlayer : blackPlayer;
-    std::pair<Position, Position> move = {{0, 0}, {0, 0}};
+    std::pair<Position, Position> move;
     bool isMoveValid = false;
     while (!isMoveValid) {
         move = currentPlayer->getMove();
         isMoveValid = MoveChecker::canMove(board, move.first.x, move.first.y, move.second.x, move.second.y, turnColor);
         if (!isMoveValid)
             std::cout << "Invalid move" << std::endl;
+    }
+    switch (getMoveType(board, move.first.x, move.first.y, move.second.x, move.second.y)) {
+        case MoveType::EN_PASSANT:
+            board.removePieceAt({move.second.x, move.first.y});
+            board.movePiece(move.first, move.second);
+            break;
+        case MoveType::CASTLING:
+            if (move.second.x == 2) {
+                board.movePiece({0, move.first.y}, {3, move.first.y});
+            } else if (move.second.x == 6) {
+                board.movePiece({7, move.first.y}, {5, move.first.y});
+            }
+            board.movePiece(move.first, move.second);
+            break;
+        case MoveType::NORMAL:
+            board.movePiece(move.first, move.second);
     }
     board.movePiece(move.first, move.second);
     if (canPromotePawn(turnColor)) {
