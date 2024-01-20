@@ -16,15 +16,13 @@ MovePossibleWithBoardStateChecker::MovePossibleWithBoardStateChecker(ChessBoard 
 
 
 bool MovePossibleWithBoardStateChecker::isMoveLegal() {
-    if (!isMoveLegalForAnyMove())
-        return false;
     switch (moveType) {
         case MoveType::EN_PASSANT:
             return isMoveLegalForEnPassant();
         case MoveType::CASTLING:
             return isMoveLegalForCastling();
         case MoveType::NORMAL:
-            return isMoveLegalForNormalPieceMove();
+            return isMoveLegalForNormalPieceMove() && isMoveLegalForAnyMove();
     }
     return false;
 }
@@ -102,9 +100,7 @@ bool MovePossibleWithBoardStateChecker::isMoveLegalForCastling() const {
         return false;
     if (pieceFrom.getMoveCount() != 0 || board.getPieceAt(to).getMoveCount() != 0)
         return false;
-    if (areTherePiecesBetween(ExistingMoves::STRAIGHT))
-        return false;
-    return true;
+    return !areTherePiecesBetween(ExistingMoves::STRAIGHT);
 }
 
 bool MovePossibleWithBoardStateChecker::isMoveLegalForEnPassant() const {
@@ -148,8 +144,8 @@ bool MovePossibleWithBoardStateChecker::areTherePiecesBetweenDiagonally() const 
 
 
 bool MovePossibleWithBoardStateChecker::areTherePiecesBetweenInStraightLine() const {
-    const int dx = (to.x - from.x) ? (to.x - from.x) / abs(to.x - from.x) : 0;
-    const int dy = (to.y - from.y) ? (to.y - from.y) / abs(to.y - from.y) : 0;
+    const int dx = to.x - from.x ? (to.x - from.x) / abs(to.x - from.x) : 0;
+    const int dy = to.y - from.y ? (to.y - from.y) / abs(to.y - from.y) : 0;
     for (int x = from.x + dx, y = from.y + dy; x != to.x || y != to.y; x += dx, y += dy) {
         if (board.isPositionOccupied({x, y}))
             return true;

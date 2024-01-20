@@ -1,18 +1,12 @@
 #include "ChessBoard.hpp"
 
-#include <iostream>
 #include <string>
 
 ChessBoard::ChessBoard() = default;
 
 ChessBoard::ChessBoard(const BoardType type) : ChessBoard() {
-    switch (type) {
-        case BoardType::DEFAULT_CHESS_BOARD:
-            populateDefaultChessBoard();
-            break;
-        case BoardType::EMPTY_BOARD:
-            break;
-    }
+    if (type == BoardType::DEFAULT_CHESS_BOARD)
+        populateDefaultChessBoard();
 }
 
 void ChessBoard::addPiece(std::unique_ptr<Piece> piece, const Position position) {
@@ -26,11 +20,10 @@ void ChessBoard::removePieceAt(const Position position) {
 void ChessBoard::movePiece(const Position oldPosition, const Position newPosition) {
     if (!isPositionOccupied(oldPosition))
         throw std::invalid_argument("No piece at position");
-    const PieceColor pieceFromColor = pieces[oldPosition]->getColor();
+    lastPositionMovedTo[pieces[oldPosition]->getColor()] = newPosition;
     auto movedPiece = std::move(pieces[oldPosition]);
     movedPiece->incrementMoveCount();
     removePieceAt(oldPosition);
-    lastPositionMovedTo[pieceFromColor] = newPosition;
     addPiece(std::move(movedPiece), newPosition);
 }
 
@@ -85,8 +78,8 @@ void ChessBoard::populateDefaultChessBoard() {
 Piece& ChessBoard::getPieceAt(const Position position) const {
     if (!isPositionOccupied(position))
         throw std::invalid_argument("No piece at position "
-            + std::to_string(position.x) + " "
-            + std::to_string(position.y));
+                                    + std::to_string(position.x) + " "
+                                    + std::to_string(position.y));
     return *pieces.at(position);
 }
 
