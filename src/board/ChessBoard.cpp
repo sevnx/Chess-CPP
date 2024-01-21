@@ -76,18 +76,20 @@ void ChessBoard::populateDefaultChessBoard() {
 }
 
 Piece& ChessBoard::getPieceAt(const Position position) const {
-    if (!isPositionOccupied(position))
+    if (!isPositionOccupied(position)) {
         throw std::invalid_argument("No piece at position "
                                     + std::to_string(position.x) + " "
                                     + std::to_string(position.y));
+    }
     return *pieces.at(position);
 }
 
 std::vector<PieceType> ChessBoard::getPiecesOnBoard(const PieceColor color) const {
     std::vector<PieceType> piecesOnBoard;
-    for (const auto&[position, piece]: pieces)
+    for (const auto&[position, piece]: pieces) {
         if (piece->getColor() == color)
             piecesOnBoard.push_back(piece->getType());
+    }
     return piecesOnBoard;
 }
 

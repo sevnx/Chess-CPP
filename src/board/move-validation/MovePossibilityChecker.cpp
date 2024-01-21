@@ -3,17 +3,16 @@
 bool MovePossibilityChecker::isMovePossible(ChessBoard &board, int fromX, int fromY, const int toX, const int toY) {
     Piece &pieceFrom = board.getPieceAt({fromX, fromY});
     return MovePossibleWithBoardStateChecker::isMoveLegal(board, fromX, fromY, toX, toY)
-    && CorrectMoveForPieceChecker::isMoveCorrect(pieceFrom, fromX, fromY, toX, toY);
+    && (CorrectMoveForPieceChecker::isMoveCorrect(pieceFrom, fromX, fromY, toX, toY) ||
+    ExistingMoveChecker::getMoveType(board, fromX, fromY, toX, toY) == MoveType::CASTLING);
 }
 
 // MovePossibleWithBoardStateChecker
-#include <iostream>
 
 MovePossibleWithBoardStateChecker::MovePossibleWithBoardStateChecker(ChessBoard &board, int fromX, int fromY, const int toX, const int toY):
-    board(board), pieceFrom(board.getPieceAt({fromX, fromY})), from(fromX, fromY), to(toX, toY),
-    boardPositionGetter(board), moveType(ExistingMoveChecker::getMoveType(board, fromX, fromY, toX, toY)) {
+    board(board), from(fromX, fromY), to(toX, toY), pieceFrom(board.getPieceAt({fromX, fromY})),
+    moveType(ExistingMoveChecker::getMoveType(board, fromX, fromY, toX, toY)), boardPositionGetter(board) {
 }
-
 
 bool MovePossibleWithBoardStateChecker::isMoveLegal() {
     switch (moveType) {
@@ -196,9 +195,9 @@ bool CorrectMoveForPieceChecker::isMoveForwardsOrSidewaysByOneCase() const {
     const int distance = std::abs(from.y - to.y);
     switch (pieceFrom.getColor()) {
         case PieceColor::WHITE:
-            return (isMoveInOneByOneBox() && distance == maxDistance) && direction == MoveDirection::FROM_WHITE_TO_BLACK;
+            return isMoveInOneByOneBox() && distance == maxDistance && direction == MoveDirection::FROM_WHITE_TO_BLACK;
         case PieceColor::BLACK:
-            return (isMoveInOneByOneBox() && distance == maxDistance) && direction == MoveDirection::FROM_BLACK_TO_WHITE;
+            return isMoveInOneByOneBox() && distance == maxDistance && direction == MoveDirection::FROM_BLACK_TO_WHITE;
     }
     return false;
 }
@@ -266,8 +265,6 @@ bool CorrectMoveForPieceChecker::isMoveCorrectForKing() const {
 
 bool CorrectMoveForPieceChecker::isMoveCorrect(Piece &piece, const int fromX, const int fromY, const int toX, const int toY) {
     const CorrectMoveForPieceChecker moveValidator(piece, fromX, fromY, toX, toY);
-    const bool isMoveNotNull = !moveValidator.isMoveNull();
-    const bool isPositionValid = Position::isPositionValid(toX, toY);
-    return isMoveNotNull && isPositionValid && moveValidator.isMoveCorrectForPiece();
+    return !moveValidator.isMoveNull() && Position::isPositionValid(toX, toY) && moveValidator.isMoveCorrectForPiece();
 }
 

@@ -2,6 +2,8 @@
 #define CHESS_CPP_CHESSBOARDVIEW_HPP
 #include <ChessBoard.hpp>
 
+#include "move-validation/MoveValidator.hpp"
+
 class ChessBoardView {
 protected:
     ChessBoard& chessBoard;
@@ -11,6 +13,8 @@ public:
     virtual ~ChessBoardView() = default;
 
     virtual void drawBoard() = 0;
+
+    virtual void displayMoveStatus(MoveStatus moveStatus) = 0;
 };
 
 

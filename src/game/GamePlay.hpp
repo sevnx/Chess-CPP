@@ -1,8 +1,8 @@
 #ifndef CHESS_CPP_GAMEPLAY_HPP
 #define CHESS_CPP_GAMEPLAY_HPP
 
-#include "../board/ChessBoard.hpp"
 #include "Player.hpp"
+#include "../board/ChessBoard.hpp"
 #include "../board/move-validation/MoveEndGameChecker.hpp"
 #include "../user-interface/text-based-interface/ChessBoardConsoleView.hpp"
 

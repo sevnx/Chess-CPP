@@ -1,9 +1,8 @@
 #include "ChessBoardConsoleView.hpp"
-
+#include <iostream>
 #include "PieceConsoleView.hpp"
 
-ChessBoardConsoleView::ChessBoardConsoleView(ChessBoard&chessBoard): ChessBoardView(chessBoard) {
-}
+ChessBoardConsoleView::ChessBoardConsoleView(ChessBoard& chessBoard): ChessBoardView(chessBoard) {}
 
 void printOutSpace() {
     std::cout << " ";
@@ -18,7 +17,7 @@ void ChessBoardConsoleView::printHorizontalLabels() {
 }
 
 void ChessBoardConsoleView::printSquare(const int x, const int y) const {
-    std::cout << " "; // print vertical line
+    std::cout << " ";
     if (chessBoard.isPositionOccupied(Position(x, y))) {
         const auto& piece = chessBoard.getPieceAt(Position(x, y));
         PieceConsoleView pieceView(piece);
@@ -26,7 +25,26 @@ void ChessBoardConsoleView::printSquare(const int x, const int y) const {
     } else {
         std::cout << " ";
     }
-    std::cout << " |"; // print vertical line
+    std::cout << " |";
+}
+
+void ChessBoardConsoleView::displayMoveStatus(const MoveStatus moveStatus) {
+    switch (moveStatus) {
+        case MoveStatus::INCORRECT_POSITION:
+            std::cout << "No piece at this position" << std::endl;
+            break;
+        case MoveStatus::INCORRECT_TURN:
+            std::cout << "Wrong piece color for this turn" << std::endl;
+            break;
+        case MoveStatus::INCORRECT_MOVE:
+            std::cout << "Incorrect move for this piece" << std::endl;
+            break;
+        case MoveStatus::CHECK:
+            std::cout << "Impossible move, you are in check" << std::endl;
+            break;
+        case MoveStatus::VALID:
+            break;
+    }
 }
 
 void ChessBoardConsoleView::printRow(const int y) const {

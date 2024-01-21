@@ -1,12 +1,12 @@
 #ifndef CHESS_CPP_BOARD_H
 #define CHESS_CPP_BOARD_H
 
-#include <vector>
 #include <map>
 #include <memory>
+#include <vector>
 
-#include "../pieces/PieceFactory.hpp"
 #include "Position.hpp"
+#include "../pieces/PieceFactory.hpp"
 
 enum class BoardType {
     DEFAULT_CHESS_BOARD,
@@ -23,6 +23,7 @@ class ChessBoard {
     void populateDefaultChessBoard();
 
 public:
+
     static constexpr int WHITE_PAWN_ROW = 6;
 
     static constexpr int WHITE_PIECES_ROW = 7;
@@ -49,9 +50,9 @@ public:
 
     [[nodiscard]] std::vector<PieceType> getPiecesOnBoard(PieceColor color) const;
 
-    ChessBoard(const ChessBoard&other);
+    ChessBoard(const ChessBoard& other);
 
-    ChessBoard& operator=(const ChessBoard&other);
+    ChessBoard& operator=(const ChessBoard& other);
 
     ~ChessBoard() = default;
 };

@@ -1,6 +1,5 @@
 #include "MoveEndGameChecker.hpp"
 
-
 bool MoveEndGameChecker::isCheck(ChessBoard&board, const PieceColor color) {
     const Position kingPosition = BoardPositionGetter(board).getFirstPiecePosition(color, PieceType::KING);
     return PositionAttackChecker(board, color).isPositionAttacked(kingPosition);
@@ -15,10 +14,11 @@ bool MoveEndGameChecker::isCheckAfterMove(ChessBoard board, const PieceColor col
 bool MoveEndGameChecker::isCheckmate(ChessBoard&board, const PieceColor color) {
     if (!isCheck(board, color))
         return false;
-    for (const auto&[fst, snd]: BoardPossibleMoveGetter::getPossibleMoves(board, color))
+    for (const auto&[fst, snd]: BoardPossibleMoveGetter::getPossibleMoves(board, color)) {
         if (!isCheckAfterMove(board, color, fst.x, fst.y, snd.x, snd.y))
-            return true;
-    return false;
+            return false;
+    }
+    return true;
 }
 
 bool MoveEndGameChecker::isStalemate(const ChessBoard&board, const PieceColor color) {

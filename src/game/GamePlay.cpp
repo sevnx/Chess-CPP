@@ -54,9 +54,9 @@ void GamePlay::turn() {
     bool isMoveValid = false;
     while (!isMoveValid) {
         move = currentPlayer->getMove();
-        isMoveValid = MoveChecker::canMove(board, move.first.x, move.first.y, move.second.x, move.second.y, turnColor);
-        if (!isMoveValid)
-            std::cout << "Invalid move" << std::endl;
+        const MoveStatus moveStatus = MoveChecker::canMove(board, move.first.x, move.first.y, move.second.x, move.second.y, turnColor);
+        boardView->displayMoveStatus(moveStatus);
+        isMoveValid = moveStatus == MoveStatus::VALID;
     }
     executeMove(move);
 }

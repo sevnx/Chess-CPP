@@ -1,12 +1,19 @@
 #ifndef CHESS_CPP_MOVEVALIDATOR_HPP
 #define CHESS_CPP_MOVEVALIDATOR_HPP
 
-#include "MovePossibilityChecker.hpp"
-#include "PositionAttackChecker.hpp"
+#include "MoveEndGameChecker.hpp"
+
+enum class MoveStatus {
+        VALID,
+        CHECK,
+        INCORRECT_TURN,
+        INCORRECT_POSITION,
+        INCORRECT_MOVE,
+};
 
 class MoveChecker {
 public:
-        static bool canMove(ChessBoard& board, int fromX, int fromY, int toX, int toY, PieceColor currentTurn);
+        static MoveStatus canMove(ChessBoard& board, int fromX, int fromY, int toX, int toY, PieceColor currentTurn);
 };
 
 #endif //CHESS_CPP_MOVEVALIDATOR_HPP

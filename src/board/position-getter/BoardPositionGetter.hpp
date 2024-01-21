@@ -8,11 +8,9 @@
 class BoardPositionGetter {
     const ChessBoard &board;
 
-    static void populatePositionsInBetweenDiagonally(std::vector<Position> &positions,
-                                                     const std::pair<Position, Position> &fromTo);
-
-    static void populatePositionsInBetweenInStraightLine(std::vector<Position> &positions,
-                                                         const std::pair<Position, Position> &fromTo);
+    static void populatePositionsInBetween(std::vector<Position> &positions,
+                                           const std::pair<Position, Position> &fromTo,
+                                           const std::pair<int, int> &direction);
 
 public:
     explicit BoardPositionGetter(const ChessBoard &board);

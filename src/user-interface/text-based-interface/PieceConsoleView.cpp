@@ -1,4 +1,6 @@
 #include "PieceConsoleView.hpp"
+#include <iostream>
+#include "../../../lib/termcolor/termcolor.hpp"
 
 char PieceConsoleView::getPieceSymbol() const {
     switch (pieceType) {
@@ -24,8 +26,7 @@ PieceColor PieceConsoleView::getPieceColor() const {
     return pieceColor;
 }
 
-PieceConsoleView::PieceConsoleView(const Piece&piece) : PieceView(piece) {
-}
+PieceConsoleView::PieceConsoleView(const Piece& piece) : PieceView(piece) {}
 
 void PieceConsoleView::drawPiece() {
     if (getPieceColor() == PieceColor::WHITE)
@@ -34,5 +35,3 @@ void PieceConsoleView::drawPiece() {
         std::cout << termcolor::red;
     std::cout << getPieceSymbol() << termcolor::reset;
 }
-
-

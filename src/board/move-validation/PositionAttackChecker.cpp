@@ -1,7 +1,8 @@
 #include "PositionAttackChecker.hpp"
+#include <algorithm>
 
-PositionAttackChecker::PositionAttackChecker(ChessBoard &board, const PieceColor ourColor)
-        : board(board), ourColor(ourColor){}
+PositionAttackChecker::PositionAttackChecker(ChessBoard& board, const PieceColor ourColor) : board(board)
+  , ourColor(ourColor) {}
 
 bool PositionAttackChecker::isPositionAttacked(const int x, const int y) const {
     for (int i = 0; i < Position::MAX_POSITION; i++) {
@@ -10,7 +11,7 @@ bool PositionAttackChecker::isPositionAttacked(const int x, const int y) const {
                 continue;
             if (board.getPieceAt({i, j}).getColor() == ourColor)
                 continue;
-            if (MovePossibilityChecker::isMovePossible(board, i, j, x, y)){
+            if (MovePossibilityChecker::isMovePossible(board, i, j, x, y)) {
                 return true;
             }
         }
@@ -18,8 +19,8 @@ bool PositionAttackChecker::isPositionAttacked(const int x, const int y) const {
     return false;
 }
 
-bool PositionAttackChecker::arePositionsAttacked(const std::vector<Position> &positions) const {
-    std::any_of(positions.begin(), positions.end(), [&](const Position position) {
+bool PositionAttackChecker::arePositionsAttacked(const std::vector<Position>& positions) const {
+    std::any_of(positions.begin(), positions.end(), [&] (const Position position) {
         return isPositionAttacked(position);
     });
     return false;

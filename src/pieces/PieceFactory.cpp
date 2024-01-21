@@ -1,4 +1,12 @@
 #include "PieceFactory.hpp"
+#include <stdexcept>
+
+#include "types/Bishop.hpp"
+#include "types/King.hpp"
+#include "types/Knight.hpp"
+#include "types/Pawn.hpp"
+#include "types/Queen.hpp"
+#include "types/Rook.hpp"
 
 std::unique_ptr<Piece> PieceFactory::createPiece(const PieceType type, const PieceColor color) {
     switch (type) {
