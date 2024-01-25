@@ -2,7 +2,6 @@
 #define MOVEENDGAMECHECKER_HPP
 
 #include "PositionAttackChecker.hpp"
-#include "../move-getter/BoardPossibleMoveGetter.hpp"
 
 class MoveEndGameChecker {
 public:
@@ -12,7 +11,7 @@ public:
     static bool isStalemate(const ChessBoard&board, PieceColor color);
 
     // Checks for draw by insufficient material
-    static bool isDraw(ChessBoard &board);
+    static bool isDraw(const ChessBoard &board);
 };
 
 #endif //MOVEENDGAMECHECKER_HPP

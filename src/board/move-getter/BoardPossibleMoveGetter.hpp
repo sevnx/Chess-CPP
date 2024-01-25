@@ -1,7 +1,6 @@
 #ifndef BOARDMOVEGETTER_HPP
 #define BOARDMOVEGETTER_HPP
 
-#include <array>
 #include "../ChessBoard.hpp"
 #include "../position-getter/BoardPositionGetter.hpp"
 

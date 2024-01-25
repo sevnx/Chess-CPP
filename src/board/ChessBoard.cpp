@@ -1,5 +1,5 @@
 #include "ChessBoard.hpp"
-
+#include <stdexcept>
 #include <string>
 
 ChessBoard::ChessBoard() = default;

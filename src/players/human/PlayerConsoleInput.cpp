@@ -1,6 +1,7 @@
 #include "PlayerConsoleInput.hpp"
+#include <array>
 
-bool PlayerConsoleInput::canParsePosition(const std::string& positionString) {
+bool PlayerConsoleInput::canParsePosition(const std::string&positionString) {
     if (positionString.length() != 2)
         return false;
     if (positionString[0] < MIN_POSITION_CHAR || positionString[0] > MAX_POSITION_CHAR)
@@ -10,17 +11,17 @@ bool PlayerConsoleInput::canParsePosition(const std::string& positionString) {
     return true;
 }
 
-bool PlayerConsoleInput::canParsePieceType(const std::string& pieceTypeString) {
+bool PlayerConsoleInput::canParsePieceType(const std::string&pieceTypeString) {
     constexpr int NUMBER_OF_PIECE_TYPES = 4, LENGTH_OF_PIECE_TYPE_STRING = 1;
     if (pieceTypeString.length() != LENGTH_OF_PIECE_TYPE_STRING)
         return false;
     std::array<char, NUMBER_OF_PIECE_TYPES> validPieceTypes = {'Q', 'R', 'B', 'N'};
-    return std::any_of(validPieceTypes.begin(), validPieceTypes.end(), [&] (const char pieceType) {
+    return std::any_of(validPieceTypes.begin(), validPieceTypes.end(), [&](const char pieceType) {
         return pieceType == pieceTypeString[0];
     });
 }
 
-PieceType PlayerConsoleInput::parsePieceType(const std::string& pieceTypeString) {
+PieceType PlayerConsoleInput::parsePieceType(const std::string&pieceTypeString) {
     switch (pieceTypeString[0]) {
         case 'Q':
             return PieceType::QUEEN;
@@ -35,7 +36,7 @@ PieceType PlayerConsoleInput::parsePieceType(const std::string& pieceTypeString)
     }
 }
 
-Position PlayerConsoleInput::parsePosition(const std::string& positionString) {
+Position PlayerConsoleInput::parsePosition(const std::string&positionString) {
     return {positionString[0] - MIN_POSITION_CHAR, MAX_POSITION_NUM - positionString[1]};
 }
 
@@ -61,6 +62,7 @@ PieceType PlayerConsoleInput::getPiecePromotionType() {
     return parsePieceType(pieceTypeString);
 }
 
-PlayerConsoleInput::PlayerConsoleInput(std::istream& inputStream, std::ostream& outputStream)
+PlayerConsoleInput::PlayerConsoleInput(std::istream&inputStream, std::ostream&outputStream)
     : inputStream(inputStream),
-      outputStream(outputStream) {}
+      outputStream(outputStream) {
+}

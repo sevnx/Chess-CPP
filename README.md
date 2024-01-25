@@ -26,9 +26,9 @@ It is written in C++17 and will use most likely, the [SFML](https://www.sfml-dev
 ### Overview
 
 - ✅ Board creation and display in terminal
-- ✅ Game logic (turns, etc.) <- Need to test promotion
+- ✅ Game logic (turns, etc.)
 - ✅ Piece movement
-- 🟡 Game checks (check, checkmate, etc.) <- Testing needed
+- ✅ Game checks (check, checkmate, etc.)
 - ❌ Game saving and loading
 - ❌ Move logging
 - ❌ GUI

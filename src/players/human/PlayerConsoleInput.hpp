@@ -2,7 +2,6 @@
 #define CHESSBOARDPLAYERINTERFACETEXTBASED_HPP
 
 #include <algorithm>
-#include <array>
 #include <iostream>
 #include <../../game/Player.hpp>
 

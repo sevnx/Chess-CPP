@@ -3,7 +3,6 @@
 
 #include "Player.hpp"
 #include "../board/ChessBoard.hpp"
-#include "../board/move-validation/MoveEndGameChecker.hpp"
 #include "../user-interface/text-based-interface/ChessBoardConsoleView.hpp"
 
 class GamePlay {

@@ -63,4 +63,5 @@ add_executable(Chess_CPP
         src/board/move-validation/MoveDirection.hpp
         src/board/move-validation/MoveDirection.cpp
         lib/termcolor/termcolor.hpp
+        # test/DrawTest.cpp
 )

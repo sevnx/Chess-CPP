@@ -2,7 +2,6 @@
 #define MOVEPOSSIBILITYCHECKER_HPP
 
 #include "board/ChessBoard.hpp"
-#include "board/move-validation/MoveDirection.hpp"
 #include "position-getter/BoardPositionGetter.hpp"
 
 /**

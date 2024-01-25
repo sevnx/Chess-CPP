@@ -1,8 +1,6 @@
 #ifndef CHESS_CPP_POSITION_H
 #define CHESS_CPP_POSITION_H
 
-#include <stdexcept>
-
 struct Position {
     enum {
         MAX_POSITION = 8,

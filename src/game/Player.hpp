@@ -3,6 +3,7 @@
 
 #include <../board/Position.hpp>
 #include <../pieces/Piece.hpp>
+#include <utility>
 
 class Player {
 public:
