@@ -1,6 +1,12 @@
 #include "MoveValidator.hpp"
 
-MoveStatus MoveChecker::canMove(ChessBoard& board, const int fromX, const int fromY, const int toX, const int toY, const PieceColor currentTurn) {
+MoveStatus MoveChecker::canMove(ChessBoard& board,
+                                const int fromX,
+                                const int fromY,
+                                const int toX,
+                                const int toY,
+                                const PieceColor currentTurn
+) {
     if (!board.isPositionOccupied({fromX, fromY}))
         return MoveStatus::INCORRECT_POSITION;
     if (board.getPieceAt({fromX, fromY}).getColor() != currentTurn)

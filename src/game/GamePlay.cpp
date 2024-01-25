@@ -5,11 +5,11 @@
 #include "move-validation/MoveValidator.hpp"
 #include "players/human/PlayerConsoleInput.hpp"
 
-GamePlay::GamePlay(): board(BoardType::DEFAULT_CHESS_BOARD), boardView(std::make_unique<ChessBoardConsoleView>(board)),
-                      whitePlayer(std::make_unique<PlayerConsoleInput>()),
-                      blackPlayer(std::make_unique<PlayerConsoleInput>()),
-                      turnColor(STARTING_TURN_COLOR) {
-}
+GamePlay::GamePlay(): board(BoardType::DEFAULT_CHESS_BOARD)
+                  , boardView(std::make_unique<ChessBoardConsoleView>(board))
+                  , whitePlayer(std::make_unique<PlayerConsoleInput>())
+                  , blackPlayer(std::make_unique<PlayerConsoleInput>())
+                  , turnColor(STARTING_TURN_COLOR) {}
 
 void GamePlay::startGame() {
     GamePlay game;
@@ -49,7 +49,7 @@ GamePlay::GameState GamePlay::getGameState() {
 void GamePlay::turn() {
     std::cout << "Turn: " << (turnColor == PieceColor::WHITE ? "White" : "Black") << std::endl;
     boardView->drawBoard();
-    const auto&currentPlayer = turnColor == PieceColor::WHITE ? whitePlayer : blackPlayer;
+    const auto& currentPlayer = turnColor == PieceColor::WHITE ? whitePlayer : blackPlayer;
     std::pair<Position, Position> move;
     bool isMoveValid = false;
     while (!isMoveValid) {
@@ -62,7 +62,7 @@ void GamePlay::turn() {
     executeMove(move);
 }
 
-void GamePlay::executeMove(const std::pair<Position, Position>&move) {
+void GamePlay::executeMove(const std::pair<Position, Position>& move) {
     const int castlingOffset = move.second.x > move.first.x ? -1 : 1;
     switch (ExistingMoveChecker::getMoveType(board, move.first.x, move.first.y, move.second.x, move.second.y)) {
         case MoveType::EN_PASSANT:

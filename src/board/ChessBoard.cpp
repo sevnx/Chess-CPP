@@ -86,24 +86,24 @@ Piece& ChessBoard::getPieceAt(const Position position) const {
 
 std::vector<PieceType> ChessBoard::getPiecesOnBoard(const PieceColor color) const {
     std::vector<PieceType> piecesOnBoard;
-    for (const auto&[position, piece]: pieces) {
+    for (const auto& [position, piece] : pieces) {
         if (piece->getColor() == color)
             piecesOnBoard.push_back(piece->getType());
     }
     return piecesOnBoard;
 }
 
-ChessBoard::ChessBoard(const ChessBoard&other) {
-    for (const auto&[position, piece]: other.pieces)
+ChessBoard::ChessBoard(const ChessBoard& other) {
+    for (const auto& [position, piece] : other.pieces)
         pieces[position] = std::make_unique<Piece>(*piece);
     lastPositionMovedTo = other.lastPositionMovedTo;
 }
 
-ChessBoard& ChessBoard::operator=(const ChessBoard&other) {
+ChessBoard& ChessBoard::operator=(const ChessBoard& other) {
     if (this == &other)
         return *this;
     pieces.clear();
-    for (const auto&[position, piece]: other.pieces)
+    for (const auto& [position, piece] : other.pieces)
         pieces[position] = std::make_unique<Piece>(*piece);
     lastPositionMovedTo = other.lastPositionMovedTo;
     return *this;
