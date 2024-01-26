@@ -26,8 +26,7 @@ std::vector<Position> BoardPositionGetter::getPiecesPositions(const PieceColor c
     std::vector<Position> positions;
     for (int i = 0; i < Position::MAX_POSITION; i++)
         for (int j = 0; j < Position::MAX_POSITION; j++) {
-            const Piece&piece = board.getPieceAt({i, j});
-            if (piece.getType() == type && piece.getColor() == color)
+            if (const Piece&piece = board.getPieceAt({i, j}); piece.getType() == type && piece.getColor() == color)
                 positions.emplace_back(i, j);
         }
     return positions;

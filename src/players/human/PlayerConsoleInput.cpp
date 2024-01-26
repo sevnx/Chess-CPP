@@ -12,8 +12,8 @@ bool PlayerConsoleInput::canParsePosition(const std::string&positionString) {
 }
 
 bool PlayerConsoleInput::canParsePieceType(const std::string&pieceTypeString) {
-    constexpr int NUMBER_OF_PIECE_TYPES = 4, LENGTH_OF_PIECE_TYPE_STRING = 1;
-    if (pieceTypeString.length() != LENGTH_OF_PIECE_TYPE_STRING)
+    constexpr int NUMBER_OF_PIECE_TYPES = 4;
+    if (constexpr int LENGTH_OF_PIECE_TYPE_STRING = 1; pieceTypeString.length() != LENGTH_OF_PIECE_TYPE_STRING)
         return false;
     std::array<char, NUMBER_OF_PIECE_TYPES> validPieceTypes = {'Q', 'R', 'B', 'N'};
     return std::any_of(validPieceTypes.begin(), validPieceTypes.end(), [&](const char pieceType) {

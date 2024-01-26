@@ -12,7 +12,7 @@
  */
 class MovePossibilityChecker {
 public:
-    static bool isMovePossible(ChessBoard &board, int fromX, int fromY, int toX, int toY);
+    static bool isMovePossible(const ChessBoard &board, int fromX, int fromY, int toX, int toY);
 };
 
 /**
@@ -21,14 +21,14 @@ public:
  * Basically checks if there is no piece on the way, and if the piece can move to the destination etc.
  */
 class MovePossibleWithBoardStateChecker {
-    ChessBoard &board;
+    const ChessBoard &board;
     Position from;
     Position to;
     Piece &pieceFrom;
     MoveType moveType;
     BoardPositionGetter boardPositionGetter;
 
-    MovePossibleWithBoardStateChecker(ChessBoard &board, int fromX, int fromY, int toX, int toY);
+    MovePossibleWithBoardStateChecker(const ChessBoard &board, int fromX, int fromY, int toX, int toY);
 
     bool isMoveLegal();
 
@@ -61,7 +61,7 @@ class MovePossibleWithBoardStateChecker {
     [[nodiscard]] bool areTherePiecesBetweenInStraightLine() const;
 
 public:
-    static bool isMoveLegal(ChessBoard &board, int fromX, int fromY, int toX, int toY);
+    static bool isMoveLegal(const ChessBoard &board, int fromX, int fromY, int toX, int toY);
 };
 
 /**

@@ -1,6 +1,6 @@
 #include "MoveValidator.hpp"
 
-MoveStatus MoveChecker::canMove(ChessBoard& board,
+MoveStatus MoveChecker::canMove(const ChessBoard& board,
                                 const int fromX,
                                 const int fromY,
                                 const int toX,
@@ -13,7 +13,7 @@ MoveStatus MoveChecker::canMove(ChessBoard& board,
         return MoveStatus::INCORRECT_TURN;
     if (!MovePossibilityChecker::isMovePossible(board, fromX, fromY, toX, toY))
         return MoveStatus::INCORRECT_MOVE;
-    if (MoveEndGameChecker::isCheckAfterMove(board, currentTurn, fromX, fromY, toX, toY))
+    if (MoveStatusChecker::isCheckAfterMove(board, currentTurn, fromX, fromY, toX, toY))
         return MoveStatus::CHECK;
     return MoveStatus::VALID;
 }

@@ -1,15 +1,18 @@
 #include "GamePlay.hpp"
 
-#include "move-validation/MoveEndGameChecker.hpp"
+#include "../board/move-validation/MoveStatusChecker.hpp"
 #include "move-validation/MoveTypes.hpp"
 #include "move-validation/MoveValidator.hpp"
+#include "players/ai/PlayerSmartAI.hpp"
+#include "players/ai/PlayerStupidAI.hpp"
 #include "players/human/PlayerConsoleInput.hpp"
 
 GamePlay::GamePlay(): board(BoardType::DEFAULT_CHESS_BOARD)
-                  , boardView(std::make_unique<ChessBoardConsoleView>(board))
-                  , whitePlayer(std::make_unique<PlayerConsoleInput>())
-                  , blackPlayer(std::make_unique<PlayerConsoleInput>())
-                  , turnColor(STARTING_TURN_COLOR) {}
+                      , boardView(std::make_unique<ChessBoardConsoleView>(board))
+                      , whitePlayer(std::make_unique<PlayerSmartAI>(board, PieceColor::WHITE))
+                      , blackPlayer(std::make_unique<PlayerStupidAI>(board, PieceColor::BLACK))
+                      , turnColor(STARTING_TURN_COLOR) {
+}
 
 void GamePlay::startGame() {
     GamePlay game;
@@ -33,14 +36,14 @@ void GamePlay::startGame() {
     }
 }
 
-GamePlay::GameState GamePlay::getGameState() {
-    if (MoveEndGameChecker::isCheckmate(board, turnColor)) {
+GamePlay::GameState GamePlay::getGameState() const {
+    if (MoveStatusChecker::isCheckmate(board, turnColor)) {
         return GameState::CHECKMATE;
     }
-    if (MoveEndGameChecker::isStalemate(board, turnColor)) {
+    if (MoveStatusChecker::isStalemate(board, turnColor)) {
         return GameState::STALEMATE;
     }
-    if (MoveEndGameChecker::isDraw(board)) {
+    if (MoveStatusChecker::isDraw(board)) {
         return GameState::DRAW;
     }
     return GameState::IN_PROGRESS;
@@ -49,7 +52,7 @@ GamePlay::GameState GamePlay::getGameState() {
 void GamePlay::turn() {
     std::cout << "Turn: " << (turnColor == PieceColor::WHITE ? "White" : "Black") << std::endl;
     boardView->drawBoard();
-    const auto& currentPlayer = turnColor == PieceColor::WHITE ? whitePlayer : blackPlayer;
+    const auto&currentPlayer = turnColor == PieceColor::WHITE ? whitePlayer : blackPlayer;
     std::pair<Position, Position> move;
     bool isMoveValid = false;
     while (!isMoveValid) {
@@ -62,7 +65,7 @@ void GamePlay::turn() {
     executeMove(move);
 }
 
-void GamePlay::executeMove(const std::pair<Position, Position>& move) {
+void GamePlay::executeMove(const std::pair<Position, Position>&move) {
     const int castlingOffset = move.second.x > move.first.x ? -1 : 1;
     switch (ExistingMoveChecker::getMoveType(board, move.first.x, move.first.y, move.second.x, move.second.y)) {
         case MoveType::EN_PASSANT:
@@ -83,7 +86,7 @@ void GamePlay::executeMove(const std::pair<Position, Position>& move) {
     }
 }
 
-bool GamePlay::isGameOver() {
+bool GamePlay::isGameOver() const {
     return getGameState() != GameState::IN_PROGRESS;
 }
 

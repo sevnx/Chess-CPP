@@ -3,7 +3,8 @@
 #include <cmath>
 using std::abs;
 
-bool MovePossibilityChecker::isMovePossible(ChessBoard&board, int fromX, int fromY, const int toX, const int toY) {
+bool MovePossibilityChecker::isMovePossible(const ChessBoard&board, int fromX, int fromY, const int toX,
+                                            const int toY) {
     Piece&pieceFrom = board.getPieceAt({fromX, fromY});
     return MovePossibleWithBoardStateChecker::isMoveLegal(board, fromX, fromY, toX, toY)
            && (CorrectMoveForPieceChecker::isMoveCorrect(pieceFrom, fromX, fromY, toX, toY) ||
@@ -12,7 +13,7 @@ bool MovePossibilityChecker::isMovePossible(ChessBoard&board, int fromX, int fro
 
 // MovePossibleWithBoardStateChecker
 
-MovePossibleWithBoardStateChecker::MovePossibleWithBoardStateChecker(ChessBoard&board, int fromX, int fromY,
+MovePossibleWithBoardStateChecker::MovePossibleWithBoardStateChecker(const ChessBoard&board, int fromX, int fromY,
                                                                      const int toX, const int toY): board(board),
     from(fromX, fromY), to(toX, toY), pieceFrom(board.getPieceAt({fromX, fromY})),
     moveType(ExistingMoveChecker::getMoveType(board, fromX, fromY, toX, toY)), boardPositionGetter(board) {
@@ -157,8 +158,9 @@ bool MovePossibleWithBoardStateChecker::areTherePiecesBetweenInStraightLine() co
 }
 
 
-bool MovePossibleWithBoardStateChecker::isMoveLegal(ChessBoard&board, const int fromX, const int fromY, const int toX,
-                                                    int toY) {
+bool MovePossibleWithBoardStateChecker::isMoveLegal(const ChessBoard&board, const int fromX, const int fromY,
+                                                    const int toX,
+                                                    const int toY) {
     MovePossibleWithBoardStateChecker check(board, fromX, fromY, toX, toY);
     return check.isMoveLegal();
 }

@@ -1,3 +1,4 @@
 #include "Pawn.hpp"
 
-Pawn::Pawn(PieceColor color) : Piece(color, PieceType::PAWN, PAWN_VALUE) {}
+Pawn::Pawn(const PieceColor color) : Piece(color, PieceType::PAWN, PAWN_VALUE) {
+}

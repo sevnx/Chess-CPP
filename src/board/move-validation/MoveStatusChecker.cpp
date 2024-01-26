@@ -1,20 +1,30 @@
-#include "MoveEndGameChecker.hpp"
+#include "MoveStatusChecker.hpp"
 #include <algorithm>
 #include <stdexcept>
+
+#include "MoveValidator.hpp"
 #include "../move-getter/BoardPossibleMoveGetter.hpp"
 
-bool MoveEndGameChecker::isCheck(ChessBoard&board, const PieceColor color) {
+bool MoveStatusChecker::isCapture(const ChessBoard& board, int fromX, int fromY, int toX, int toY) {
+    if (!board.isPositionOccupied({toX, toY}))
+        return false;
+    const auto fromPiece = board.getPieceAt({fromX, fromY});
+    const auto toPiece = board.getPieceAt({toX, toY});
+    return MoveChecker::canMove(board, fromX, fromY, toX, toY, fromPiece.getColor())==MoveStatus::VALID;
+}
+
+bool MoveStatusChecker::isCheck(const ChessBoard&board, const PieceColor color) {
     const Position kingPosition = BoardPositionGetter(board).getFirstPiecePosition(color, PieceType::KING);
     return PositionAttackChecker(board, color).isPositionAttacked(kingPosition);
 }
 
-bool MoveEndGameChecker::isCheckAfterMove(ChessBoard board, const PieceColor color, int fromX, int fromY, int toX,
+bool MoveStatusChecker::isCheckAfterMove(ChessBoard board, const PieceColor color, int fromX, int fromY, int toX,
                                           int toY) {
     board.movePiece({fromX, fromY}, {toX, toY});
     return isCheck(board, color);
 }
 
-bool MoveEndGameChecker::isCheckmate(ChessBoard&board, const PieceColor color) {
+bool MoveStatusChecker::isCheckmate(const ChessBoard&board, const PieceColor color) {
     if (!isCheck(board, color))
         return false;
     for (const auto&[fst, snd]: BoardPossibleMoveGetter::getPossibleMoves(board, color)) {
@@ -24,7 +34,13 @@ bool MoveEndGameChecker::isCheckmate(ChessBoard&board, const PieceColor color) {
     return true;
 }
 
-bool MoveEndGameChecker::isStalemate(const ChessBoard&board, const PieceColor color) {
+bool MoveStatusChecker::isCheckMateAfterMove(ChessBoard board, const PieceColor color, int fromX, int fromY, int toX,
+                                              int toY) {
+    board.movePiece({fromX, fromY}, {toX, toY});
+    return isCheckmate(board, color);
+}
+
+bool MoveStatusChecker::isStalemate(const ChessBoard&board, const PieceColor color) {
     return BoardPossibleMoveGetter::getPossibleMoves(board, color).empty();
 }
 
@@ -41,7 +57,7 @@ bool equals(const std::vector<PieceType>&first, const std::vector<PieceType>&sec
 }
 
 
-bool MoveEndGameChecker::isDraw(const ChessBoard&board) {
+bool MoveStatusChecker::isDraw(const ChessBoard&board) {
     const auto whitePieces = board.getPiecesOnBoard(PieceColor::WHITE);
     const auto blackPieces = board.getPiecesOnBoard(PieceColor::BLACK);
 

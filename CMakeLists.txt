@@ -55,8 +55,8 @@ add_executable(Chess_CPP
         src/board/move-validation/MovePossibilityChecker.cpp
         src/board/move-validation/MovePossibilityChecker.hpp
         src/board/move-validation/MoveTypes.cpp
-        src/board/move-validation/MoveEndGameChecker.cpp
-        src/board/move-validation/MoveEndGameChecker.hpp
+        src/board/move-validation/MoveStatusChecker.cpp
+        src/board/move-validation/MoveStatusChecker.hpp
         src/board/move-getter/BoardPossibleMoveGetter.cpp
         src/board/move-getter/BoardPossibleMoveGetter.hpp
         src/game/Player.hpp
@@ -71,6 +71,8 @@ add_executable(Chess_CPP
         src/board/move-validation/MoveDirection.hpp
         src/board/move-validation/MoveDirection.cpp
         lib/termcolor/termcolor.hpp
+        src/players/ai/PlayerSmartAI.cpp
+        src/players/ai/PlayerSmartAI.hpp
         # test/DrawTest.cpp
 )
 

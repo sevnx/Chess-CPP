@@ -1,7 +1,7 @@
 #include "PositionAttackChecker.hpp"
 #include <algorithm>
 
-PositionAttackChecker::PositionAttackChecker(ChessBoard& board, const PieceColor ourColor) : board(board)
+PositionAttackChecker::PositionAttackChecker(const ChessBoard& board, const PieceColor ourColor) : board(board)
   , ourColor(ourColor) {}
 
 bool PositionAttackChecker::isPositionAttacked(const int x, const int y) const {

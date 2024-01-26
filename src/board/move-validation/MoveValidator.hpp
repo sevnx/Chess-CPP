@@ -1,7 +1,7 @@
 #ifndef CHESS_CPP_MOVEVALIDATOR_HPP
 #define CHESS_CPP_MOVEVALIDATOR_HPP
 
-#include "MoveEndGameChecker.hpp"
+#include "MoveStatusChecker.hpp"
 
 enum class MoveStatus {
         VALID,
@@ -13,7 +13,7 @@ enum class MoveStatus {
 
 class MoveChecker {
 public:
-        static MoveStatus canMove(ChessBoard& board, int fromX, int fromY, int toX, int toY, PieceColor currentTurn);
+        static MoveStatus canMove(const ChessBoard& board, int fromX, int fromY, int toX, int toY, PieceColor currentTurn);
 };
 
 #endif //CHESS_CPP_MOVEVALIDATOR_HPP
