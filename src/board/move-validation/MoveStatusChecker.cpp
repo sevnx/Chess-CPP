@@ -14,8 +14,10 @@ bool MoveStatusChecker::isCapture(const ChessBoard& board, int fromX, int fromY,
 }
 
 bool MoveStatusChecker::isCheck(const ChessBoard&board, const PieceColor color) {
-    const Position kingPosition = BoardPositionGetter(board).getFirstPiecePosition(color, PieceType::KING);
-    return PositionAttackChecker(board, color).isPositionAttacked(kingPosition);
+    const auto kingPosition = BoardPositionGetter(board).getFirstPiecePosition(color, PieceType::KING);
+    if (!kingPosition.has_value())
+        return true;
+    return PositionAttackChecker(board, color).isPositionAttacked(kingPosition.value());
 }
 
 bool MoveStatusChecker::isCheckAfterMove(ChessBoard board, const PieceColor color, int fromX, int fromY, int toX,

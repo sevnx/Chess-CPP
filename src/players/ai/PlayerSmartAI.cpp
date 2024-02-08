@@ -11,11 +11,12 @@ PieceColor reverseColor(const PieceColor color) {
 }
 
 std::pair<Position, Position> PlayerSmartAI::getMove() {
-    const auto move = BoardPossibleMoveGetter::getPossibleMoves(board, color);
-    auto moves = std::vector<std::pair<Position, Position>>();
-    for (const auto&[fst, snd]: move) {
-        if (MoveStatusChecker::isCheck(board, color) && !MoveStatusChecker::isCheckAfterMove(
-                board, color, fst.x, fst.y, snd.x, snd.y))
+    const bool isCheck = MoveStatusChecker::isCheck(board, color);
+    std::vector<std::pair<Position, Position>> moves;
+    for (const auto&[fst, snd]: BoardPossibleMoveGetter::getPossibleMoves(board, color)) {
+        if (MoveStatusChecker::isCheckAfterMove(board, color, fst.x, fst.y, snd.x, snd.y))
+            continue;
+        if (isCheck)
             return {fst, snd};
         if (MoveStatusChecker::isCheckMateAfterMove(board, reverseColor(color), fst.x, fst.y, snd.x, snd.y))
             return {fst, snd};

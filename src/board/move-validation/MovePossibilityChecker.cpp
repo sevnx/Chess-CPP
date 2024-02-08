@@ -151,7 +151,7 @@ bool MovePossibleWithBoardStateChecker::areTherePiecesBetweenInStraightLine() co
     const int dx = to.x - from.x ? (to.x - from.x) / abs(to.x - from.x) : 0;
     const int dy = to.y - from.y ? (to.y - from.y) / abs(to.y - from.y) : 0;
     for (int x = from.x + dx, y = from.y + dy; x != to.x || y != to.y; x += dx, y += dy) {
-        if (board.isPositionOccupied({x, y}))
+        if (Position::isPositionValid(x, y) && board.isPositionOccupied({x, y}))
             return true;
     }
     return false;

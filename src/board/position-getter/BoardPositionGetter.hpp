@@ -1,6 +1,8 @@
 #ifndef CHESS_CPP_BOARDPOSITIONGETTER_HPP
 #define CHESS_CPP_BOARDPOSITIONGETTER_HPP
 
+#include <optional>
+
 #include "board/ChessBoard.hpp"
 #include "board/Position.hpp"
 #include "board/move-validation/MoveTypes.hpp"
@@ -15,7 +17,7 @@ class BoardPositionGetter {
 public:
     explicit BoardPositionGetter(const ChessBoard &board);
 
-    [[nodiscard]] Position getFirstPiecePosition(PieceColor color, PieceType type) const;
+    [[nodiscard]] std::optional<Position> getFirstPiecePosition(PieceColor color, PieceType type) const;
 
     [[nodiscard]] std::vector<Position> getPiecesPositions(PieceColor color, PieceType type) const;
 

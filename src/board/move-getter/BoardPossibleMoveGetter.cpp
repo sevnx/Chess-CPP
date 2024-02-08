@@ -176,6 +176,5 @@ std::vector<std::pair<Position, Position>> BoardPossibleMoveGetter::getPossibleM
         for (auto&move: getPossibleMoveForPiece(board, piecePosition.x, piecePosition.y))
             possibleMoves.emplace_back(piecePosition, move);
     }
-
     return possibleMoves;
 }
